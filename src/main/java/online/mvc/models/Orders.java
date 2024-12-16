@@ -3,7 +3,7 @@ package online.mvc.models;
 import java.util.List;
 
 public class Orders {
-    private int id;
+    private String id;
     private Customers customers_ref;
     private EMOT emot_ref;
     private List<Options> options;
@@ -11,7 +11,7 @@ public class Orders {
     private OrderStates state;
     private String tracking_number;
 
-    public Orders(int id, Customers customers_ref, EMOT emot_ref, List<Options> options, double total_price, OrderStates state, String tracking_number) {
+    public Orders(String id, Customers customers_ref, EMOT emot_ref, List<Options> options, double total_price, OrderStates state, String tracking_number) {
         this.id = id;
         this.customers_ref = customers_ref;
         this.emot_ref = emot_ref;
@@ -21,11 +21,11 @@ public class Orders {
         this.tracking_number = tracking_number;
     }
 
-    public int get_id() {
+    public String get_id() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void set_id(String id) {
         this.id = id;
     }
 

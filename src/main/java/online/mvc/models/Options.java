@@ -1,17 +1,25 @@
 package online.mvc.models;
 
 public class Options {
-    private int id;
+    private String id;
     private String name;
     private String type;
     private double price;
     private EMOT emot_ref;
 
-    public int get_id() {
+    public Options(String id, String name, String type, double price, EMOT emot_ref) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.price = price;
+        this.emot_ref = emot_ref;
+    }
+
+    public String get_id() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void set_id(String id) {
         this.id = id;
     }
 

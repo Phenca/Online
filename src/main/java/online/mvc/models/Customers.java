@@ -1,13 +1,13 @@
 package online.mvc.models;
 
 public class Customers {
-    private int id;
+    private String id;
     private String firstname;
     private String lastname;
     private String email;
     private String delivery_address;
 
-    public Customers(int id, String firstname, String lastname, String email, String delivery_address) {
+    public Customers(String id, String firstname, String lastname, String email, String delivery_address) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -15,11 +15,11 @@ public class Customers {
         this.delivery_address = delivery_address;
     }
 
-    public int get_id() {
+    public String get_id() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void set_id(String id) {
         this.id = id;
     }
 
