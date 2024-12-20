@@ -11,7 +11,7 @@ public class EMOT {
         this.price = price;
     }
 
-    public int getid() {
+    public int get_id() {
         return id;
     }
 
