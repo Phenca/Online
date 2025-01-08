@@ -48,8 +48,8 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" spacing="30.0">
                <children>
-                  <Button mnemonicParsing="false" text="Se connecter" />
-                  <Button mnemonicParsing="false" text="Confirmer" />
+                  <Button mnemonicParsing="false" onAction="#switch_to_account_login" text="Se connecter" />
+                  <Button mnemonicParsing="false" onAction="#create_account" text="Confirmer" />
                </children>
             </HBox>
          </children>

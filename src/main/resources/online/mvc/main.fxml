@@ -41,15 +41,15 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <ImageView fx:id="color_0" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="color_1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="color_2" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="color_3" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="color_4" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="color_5" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="color_6" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <ImageView fx:id="color_7" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <ImageView fx:id="color_8" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
@@ -64,12 +64,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="frame_0" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <ImageView fx:id="frame_1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <ImageView fx:id="frame_2" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="frame_3" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="frame_4" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="frame_5" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
@@ -83,9 +83,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="battery_0" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="battery_1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="battery_2" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
          </children></VBox>
@@ -98,36 +98,36 @@
             </Label>
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" text="Voiture" />
-                  <Button mnemonicParsing="false" text="Vélo" />
-                  <Button mnemonicParsing="false" text="Trotinette" />
+                  <Button fx:id="emot_car" mnemonicParsing="false" onAction="#set_emot" text="Voiture" />
+                  <Button fx:id="emot_bike" mnemonicParsing="false" onAction="#set_emot" text="Vélo" />
+                  <Button fx:id="emot_scooter" mnemonicParsing="false" onAction="#set_emot" text="Trotinette" />
                </children>
                <padding>
                   <Insets bottom="10.0" top="5.0" />
                </padding>
             </HBox>
-            <ImageView fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="main_frame" fitHeight="450.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label text="Prix du MDTE :" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="emot_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
                   <Label text="Prix des options :" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="options_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
                   <Label text="Prix total :" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="total_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
-                  <Button mnemonicParsing="false" text="Valider" />
+                  <Button mnemonicParsing="false" onAction="#validate_order" text="Valider" />
                </children>
                <opaqueInsets>
                   <Insets />
