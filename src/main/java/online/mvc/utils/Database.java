@@ -42,8 +42,9 @@ public class Database {
             String firstname = queryset.getString("firstname");
             String lastname = queryset.getString("lastname");
             String email = queryset.getString("email");
+            String password = queryset.getString("password");
             String delivery_address = queryset.getString("delivery_address");
-            customers.add(new Customers(id, firstname, lastname, email, delivery_address));
+            customers.add(new Customers(id, firstname, lastname, email, password, delivery_address));
         }
         return customers;
     }
@@ -57,6 +58,7 @@ public class Database {
                 prepared_statement.setString(2, customer.get_firstname());
                 prepared_statement.setString(3, customer.get_lastname());
                 prepared_statement.setString(3, customer.get_email());
+                prepared_statement.setString(3, customer.get_password());
                 prepared_statement.setString(3, customer.get_delivery_address());
                 prepared_statement.executeUpdate();
             } catch (Exception err) {

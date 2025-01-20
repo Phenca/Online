@@ -28,7 +28,7 @@
                      <HBox.margin>
                         <Insets bottom="5.0" />
                      </HBox.margin></Label>
-                  <TextField prefHeight="31.0" prefWidth="252.0" promptText="example@email.com" />
+                  <TextField fx:id="login_email_field" prefHeight="31.0" prefWidth="252.0" promptText="example@email.com" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -40,7 +40,7 @@
                      <HBox.margin>
                         <Insets top="5.0" />
                      </HBox.margin></Label>
-                  <PasswordField prefHeight="31.0" prefWidth="198.0" promptText="Votre mot de passe" />
+                  <PasswordField fx:id="login_password_field" prefHeight="31.0" prefWidth="198.0" promptText="Votre mot de passe" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />

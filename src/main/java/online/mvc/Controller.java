@@ -5,14 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import online.mvc.models.BaseModel;
+import online.mvc.models.Customers;
 
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class Controller {
     private BaseModel model;
@@ -95,9 +97,24 @@ public class Controller {
     @FXML
     private ImageView battery_2;
 
+    // login.fxml view
     @FXML
-    protected void log_to_account(ActionEvent evt) {
-        _load_screen(evt, "main.fxml");
+    private TextField login_email_field;
+    @FXML
+    private TextField login_password_field;
+
+    @FXML
+    protected void log_to_account(ActionEvent evt) throws SQLException {
+        for (Customers customer : this.model.get_database().get_customers()) {
+            if (Objects.equals(customer.get_email(), login_email_field.getText())) {
+                if (Objects.equals(customer.get_password(), login_password_field.getText())) {
+                    System.out.println("Authentication successful !");
+                    _load_screen(evt, "main.fxml");
+                    break;
+                }
+            }
+        }
+        throw new IllegalAccessError("Authentication unsuccessful !");
     }
 
     @FXML
