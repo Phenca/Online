@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
    <children>
-      <VBox alignment="CENTER" fillWidth="false" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" fillWidth="false" layoutX="10.0" layoutY="10.0" minHeight="450.0" minWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="CREER VOTRE COMPTE">
                <font>
@@ -22,35 +22,65 @@
                   <Insets bottom="10.0" top="25.0" />
                </VBox.margin>
             </Label>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="400.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
+               <children>
+                  <Label text="Prénom : " />
+                  <TextField fx:id="signin_firstname_field" prefHeight="31.0" prefWidth="331.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
+               <children>
+                  <Label text="Nom : " />
+                  <TextField fx:id="signin_lastname_field" prefHeight="31.0" prefWidth="350.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
+               <children>
+                  <Label text="Adresse de livraison :" />
+                  <PasswordField fx:id="signin_delivery_address_field" prefHeight="31.0" prefWidth="255.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
                <children>
                   <Label text="Email : " />
-                  <TextField prefHeight="31.0" prefWidth="350.0" />
+                  <TextField fx:id="signin_email_field" prefHeight="31.0" prefWidth="350.0" />
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="400.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
                <children>
                   <Label text="Mot de passe : " />
-                  <PasswordField prefHeight="31.0" prefWidth="295.0" />
+                  <PasswordField fx:id="signin_1st_password_field" prefHeight="31.0" prefWidth="295.0" />
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="400.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
                <children>
                   <Label text="Confirmer votre mot de passe : " />
-                  <PasswordField />
+                  <PasswordField fx:id="signin_2nd_password_field" />
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" spacing="30.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#switch_to_account_login" text="Se connecter" />
                   <Button mnemonicParsing="false" onAction="#create_account" text="Confirmer" />
                </children>
+               <opaqueInsets>
+                  <Insets top="20.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>

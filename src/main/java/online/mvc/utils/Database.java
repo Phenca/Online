@@ -35,7 +35,7 @@ public class Database {
 
     public List<Customers> get_customers() throws SQLException {
         List<Customers> customers = new ArrayList<>();
-        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM post");
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM customers");
         ResultSet queryset = prepared_statement.executeQuery();
         while (queryset.next()) {
             String id = queryset.getString("id");
@@ -49,27 +49,36 @@ public class Database {
         return customers;
     }
 
-    public void add_customer(ArrayList<Customers> data) throws SQLException {
+    public String get_last_customer() throws SQLException {
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM customers");
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            if (queryset.last()) {
+                return queryset.getString("id").replace("CUS", "");
+            }
+        }
+        throw new SQLDataException("Aucune données dans la table 'Customer'");
+    }
+
+    public void add_customer(Customers data) throws SQLException {
         String sql = "INSERT INTO customers (id, firstname, lastname, email, delivery_address) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
-        for (Customers customer : data) {
-            try {
-                prepared_statement.setString(1, customer.get_id());
-                prepared_statement.setString(2, customer.get_firstname());
-                prepared_statement.setString(3, customer.get_lastname());
-                prepared_statement.setString(3, customer.get_email());
-                prepared_statement.setString(3, customer.get_password());
-                prepared_statement.setString(3, customer.get_delivery_address());
-                prepared_statement.executeUpdate();
-            } catch (Exception err) {
-                System.err.println(err.getMessage());
-            }
+        try {
+            prepared_statement.setString(1, data.get_id());
+            prepared_statement.setString(2, data.get_firstname());
+            prepared_statement.setString(3, data.get_lastname());
+            prepared_statement.setString(3, data.get_email());
+            prepared_statement.setString(3, data.get_password());
+            prepared_statement.setString(3, data.get_delivery_address());
+            prepared_statement.executeUpdate();
+        } catch (Exception err) {
+        System.err.println(err.getMessage());
         }
     }
 
     public List<Orders> get_orders() throws SQLException {
         List<Orders> orders = new ArrayList<>();
-        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM post");
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM orders");
         ResultSet queryset = prepared_statement.executeQuery();
         List<Customers> customers = get_customers();
         while (queryset.next()) {
