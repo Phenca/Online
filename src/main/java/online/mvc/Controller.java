@@ -97,28 +97,12 @@ public class Controller {
 
     @FXML
     protected void log_to_account(ActionEvent evt) {
-        try {
-            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("main.fxml"));
-            AnchorPane view = fxmlloader.load();
-            Stage new_stage = (Stage) ((Button  ) evt.getSource()).getScene().getWindow();
-            new_stage.setScene(new Scene(view));
-            new_stage.show();
-        } catch (Exception err) {
-            System.err.println(err.getMessage());
-        }
+        _load_screen(evt, "main.fxml");
     }
 
     @FXML
     protected void switch_to_account_creation(ActionEvent evt) {
-        try {
-            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("signin.fxml"));
-            AnchorPane view = fxmlloader.load();
-            Stage new_stage = (Stage) ((Button) evt.getSource()).getScene().getWindow();
-            new_stage.setScene(new Scene(view));
-            new_stage.show();
-        } catch (Exception err) {
-            System.err.println(err.getMessage());
-        }
+        _load_screen(evt, "signin.fxml");
     }
 
     @FXML
@@ -128,21 +112,17 @@ public class Controller {
 
     @FXML
     protected void switch_to_account_login(ActionEvent evt) {
-        try {
-            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("login.fxml"));
-            AnchorPane view = fxmlloader.load();
-            Stage new_stage = (Stage) ((Button) evt.getSource()).getScene().getWindow();
-            new_stage.setScene(new Scene(view));
-            new_stage.show();
-        } catch (Exception err) {
-            System.err.println(err.getMessage());
-        }
+        _load_screen(evt, "login.fxml");
     }
 
     @FXML
     protected void disconnect(ActionEvent evt) {
+        _load_screen(evt, "login.fxml");
+    }
+
+    private void _load_screen(ActionEvent evt, String name) {
         try {
-            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("login.fxml"));
+            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
             AnchorPane view = fxmlloader.load();
             Stage new_stage = (Stage) ((Button) evt.getSource()).getScene().getWindow();
             new_stage.setScene(new Scene(view));
@@ -151,7 +131,6 @@ public class Controller {
             System.err.println(err.getMessage());
         }
     }
-
 
     @FXML
     public void initialize() {
