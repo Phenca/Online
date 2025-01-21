@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Controller {
     private BaseModel model;
@@ -190,7 +193,14 @@ public class Controller {
 
     @FXML
     protected void disconnect(ActionEvent evt) {
-        _load_screen(evt, "login.fxml");
+        Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnect_popup.setTitle("Confirmation de Déconnexion");
+        disconnect_popup.setHeaderText("Êtes-vous sûr de vouloir vous déconnecter ?");
+        disconnect_popup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> user_action = disconnect_popup.showAndWait();
+        if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
+            _load_screen(evt, "login.fxml");
+        }
     }
 
     private void _load_screen(ActionEvent evt, String name) {
