@@ -5,6 +5,7 @@ import online.mvc.models.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Database {
     private Connection connection;
@@ -49,10 +50,13 @@ public class Database {
         return customers;
     }
 
-    public String get_last_customer() throws SQLException {
+    public String get_id_or_email_existing_error(String email) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM customers");
         ResultSet queryset = prepared_statement.executeQuery();
         while (queryset.next()) {
+            if (Objects.equals(queryset.getString("email"), email)) {
+                throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
+            }
             if (queryset.last()) {
                 return queryset.getString("id").replace("CUS", "");
             }

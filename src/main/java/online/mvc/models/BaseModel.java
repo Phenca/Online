@@ -15,8 +15,8 @@ public class BaseModel {
         return database;
     }
 
-    public String get_customer_id() throws SQLException {
-        int id = Integer.parseInt(this.database.get_last_customer().replace("CUS", ""));
+    public String get_customer_id(String email) throws SQLException {
+        int id = Integer.parseInt(this.database.get_id_or_email_existing_error(email).replace("CUS", ""));
         System.out.println("Current last id : " + id);
         String new_last_id = "CUS" + id + 1;
         System.out.println("New last id : " + new_last_id);

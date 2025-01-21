@@ -166,20 +166,21 @@ public class Controller {
         fields.add(signin_email_field);
         fields.add(signin_1st_password_field);
         fields.add(signin_2nd_password_field);
-        if (_check_fields_not_empty(fields)) {
-            if (Objects.equals(signin_1st_password_field.getText(), signin_2nd_password_field.getText())) {
-                System.out.println("SUPER");
-                Customers customer = new Customers(
-                        this.model.get_customer_id(),
+        try {
+            if (_check_fields_not_empty(fields)) {
+                if (Objects.equals(signin_1st_password_field.getText(), signin_2nd_password_field.getText())) {
+                    Customers customer = new Customers(
+                        this.model.get_customer_id(signin_email_field.getText()),
                         signin_firstname_field.getText(),
                         signin_lastname_field.getText(),
                         signin_email_field.getText(),
                         signin_1st_password_field.getText(),
                         signin_delivery_address_field.getText()
-                );
-                this.model.get_database().add_customer(customer);
+                    );
+                    this.model.get_database().add_customer(customer);
+                }
             }
-        }
+        } catch (IllegalArgumentException err) {System.err.println(err.getMessage());}
     }
 
     @FXML
