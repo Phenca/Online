@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import online.mvc.models.BaseModel;
 import online.mvc.models.Customers;
+import online.mvc.utils.ScreenManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class Controller {
 
     // main.fxml methods.
     @FXML
-    protected void set_emot() {
+    protected void set_emot(ActionEvent evt) {
         System.out.println("SET EMOTHERE");
 
     }
@@ -192,12 +193,13 @@ public class Controller {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
             AnchorPane view = fxmlloader.load();
-            Stage new_stage = (Stage) ((Button) evt.getSource()).getScene().getWindow();
+
+            Stage new_stage = ScreenManager.get_instance().get_primary_stage();
             new_stage.setScene(new Scene(view));
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {
-                this.set_emot();
-                this.emot_car.fire();
+                Controller controller = fxmlloader.getController();
+                controller.set_emot(new ActionEvent());
             }
         } catch (Exception err) {
             System.err.println(err.getMessage());
