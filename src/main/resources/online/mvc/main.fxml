@@ -18,7 +18,7 @@
       <Button mnemonicParsing="false" onAction="#disconnect" text="Se déconnecter" />
       <VBox alignment="CENTER" layoutX="814.0" layoutY="44.0" prefHeight="575.0" prefWidth="400.0">
          <children>
-            <GridPane alignment="CENTER" minHeight="300.0">
+            <GridPane fx:id="grid_option_1" alignment="CENTER" minHeight="300.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -42,7 +42,7 @@
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
-            <GridPane alignment="CENTER" minHeight="200.0" minWidth="75.0">
+            <GridPane fx:id="grid_option_2" alignment="CENTER" minHeight="200.0" minWidth="75.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -62,7 +62,7 @@
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
-            <GridPane minHeight="100.0" minWidth="75.0">
+            <GridPane fx:id="grid_option_3" minHeight="100.0" minWidth="75.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

@@ -3,18 +3,23 @@ package online.mvc;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import online.mvc.models.BaseModel;
 import online.mvc.models.Customers;
+import online.mvc.models.Options;
 import online.mvc.utils.ScreenManager;
+import org.controlsfx.control.spreadsheet.Grid;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,6 +36,12 @@ public class Controller {
     }
 
     // main.fxml fields.
+    @FXML
+    private GridPane grid_option_1;
+    @FXML
+    private GridPane grid_option_2;
+    @FXML
+    private GridPane grid_option_3;
     @FXML
     private Text emot_price;
     @FXML
@@ -87,9 +98,43 @@ public class Controller {
 
     // main.fxml methods.
     @FXML
-    protected void set_emot(ActionEvent evt) {
-        System.out.println("SET EMOTHERE");
+    protected void set_emot(ActionEvent evt) throws SQLException {
+        if (evt.getSource().equals(emot_car)) {
+            this.set_options_images(1, grid_option_1, "color");
+            this.set_options_images(1, grid_option_2, "rim");
+            this.set_options_images(1, grid_option_3, "battery");
+        } else if (evt.getSource().equals(emot_bike)) {
+            this.set_options_images(2, grid_option_1, "color");
+            this.set_options_images(2, grid_option_2, "frame");
+            this.set_options_images(2, grid_option_3, "battery");
+        } else if (evt.getSource().equals(emot_scooter)) {
+            this.set_options_images(3, grid_option_1, "color");
+            this.set_options_images(3, grid_option_2, "frame");
+            this.set_options_images(3, grid_option_3, "battery");
+        }
+    }
+    protected void set_options_images(int emot_id, GridPane grid, String option_type) throws SQLException {
+        this.reset_grid_cells(grid);
+        List<Options> options = this.model.get_database().get_options_of_emot(emot_id, option_type);
+        System.out.println(options);
+        int i=0;
+        for (Options option : options) {
+            if (grid.getChildren().get(i) instanceof ImageView image) {
+                String image_name = option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg";
+//                System.out.println(option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg");
+                image.setImage(new Image(this.model.resources_path+option.get_type()+"/"+image_name));
+                System.out.println(image.getImage().getUrl());
+                i++;
+            }
+        }
+    }
 
+    protected void reset_grid_cells(GridPane grid) {
+        for (Node cell : grid.getChildren()) {
+            if (cell instanceof ImageView image) {
+                image.setImage(null);
+            }
+        }
     }
 
     @FXML
@@ -199,7 +244,7 @@ public class Controller {
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {
                 Controller controller = fxmlloader.getController();
-                controller.set_emot(new ActionEvent());
+                controller.emot_bike.fire();
             }
         } catch (Exception err) {
             System.err.println(err.getMessage());

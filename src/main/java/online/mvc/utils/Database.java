@@ -130,9 +130,11 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'EMOT'");
     }
 
-    public List<Options> get_options_of_emot(int ref) throws SQLException {
+    public List<Options> get_options_of_emot(int ref, String option_type) throws SQLException {
         List<Options> options = new ArrayList<>();
-        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM options WHERE emot_ref="+ref);
+        PreparedStatement prepared_statement = connection.prepareStatement(
+                "SELECT * FROM options WHERE emot_ref="+ref+" AND type='"+option_type+"'"
+        );
         ResultSet queryset = prepared_statement.executeQuery();
         while (queryset.next()) {
             String id = queryset.getString("id");
