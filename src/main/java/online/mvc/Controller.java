@@ -25,60 +25,42 @@ public class Controller {
     private BaseModel model;
 
     @FXML
-    private Text emot_price;
+    public void initialize() {
+        this.model = new BaseModel();
+    }
 
+    // main.fxml fields.
+    @FXML
+    private Text emot_price;
     @FXML
     private Text options_price;
-
     @FXML
     private Text total_price;
-
-    @FXML
-    protected void validate_order() {
-
-    }
-
     @FXML
     private Button emot_car;
-
     @FXML
     private Button emot_bike;
-
     @FXML
     private Button emot_scooter;
-
-    @FXML
-    protected void set_emot(){
-
-    }
-
     @FXML
     private ImageView main_frame;
 
     @FXML
     private ImageView color_0;
-
     @FXML
     private ImageView color_1;
-
     @FXML
     private ImageView color_2;
-
     @FXML
     private ImageView color_3;
-
     @FXML
     private ImageView color_4;
-
     @FXML
     private ImageView color_5;
-
     @FXML
     private ImageView color_6;
-
     @FXML
     private ImageView color_7;
-
     @FXML
     private ImageView color_8;
 
@@ -102,14 +84,32 @@ public class Controller {
     @FXML
     private ImageView battery_2;
 
-    // login.fxml view
+    // main.fxml methods.
+    @FXML
+    protected void set_emot() {
+        System.out.println("SET EMOTHERE");
+
+    }
+
+    @FXML
+    protected void validate_order() {
+
+    }
+
+    // login.fxml fields.
     @FXML
     private TextField login_email_field;
     @FXML
     private TextField login_password_field;
 
+    // login.fxml methods.
     @FXML
-    protected void log_to_account(ActionEvent evt) throws SQLException {
+    protected void switch_to_account_creation(ActionEvent evt) {
+        _load_screen(evt, "signin.fxml");
+    }
+
+    @FXML
+    protected boolean log_to_account(ActionEvent evt) throws SQLException {
         ArrayList<TextField> fields = new ArrayList<>();
         fields.add(login_email_field);
         fields.add(login_password_field);
@@ -121,7 +121,7 @@ public class Controller {
                         if (Objects.equals(customer.get_password(), login_password_field.getText())) {
                             System.out.println("Authentication successful !");
                             _load_screen(evt, "main.fxml");
-                            break;
+                            return true;
                         }
                     }
                 }
@@ -131,17 +131,8 @@ public class Controller {
         }
         throw new IllegalAccessError("Authentication unsuccessful !");
     }
-    private void _check_email_field(TextField email) {
-        if (!email.getText().contains("@") && (!email.getText().endsWith(".com") || !email.getText().endsWith(".fr"))) {
-            throw new IllegalArgumentException("Le champ email doit contenir un '@' et se terminer par '.com' ou '.fr'");
-        }
-    }
-    @FXML
-    protected void switch_to_account_creation(ActionEvent evt) {
-        _load_screen(evt, "signin.fxml");
-    }
 
-    // signin.fxml view
+    // signin.fxml fields.
     @FXML
     private TextField signin_firstname_field;
     @FXML
@@ -155,14 +146,12 @@ public class Controller {
     @FXML
     private TextField signin_2nd_password_field;
 
-    private boolean _check_fields_not_empty(List<TextField> fields) {
-        for (TextField field : fields) {
-            if (field.getText().isEmpty()) {
-                throw new IllegalArgumentException("Un des champs obligatoire n'est pas renseigné");
-            }
-        }
-        return true;
+    // sign.fxml methods.
+    @FXML
+    protected void switch_to_account_login(ActionEvent evt) {
+        _load_screen(evt, "login.fxml");
     }
+
     @FXML
     protected void create_account() throws SQLException {
         ArrayList<TextField> fields = new ArrayList<>();
@@ -187,11 +176,6 @@ public class Controller {
     }
 
     @FXML
-    protected void switch_to_account_login(ActionEvent evt) {
-        _load_screen(evt, "login.fxml");
-    }
-
-    @FXML
     protected void disconnect(ActionEvent evt) {
         Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
         disconnect_popup.setTitle("Confirmation de Déconnexion");
@@ -203,6 +187,7 @@ public class Controller {
         }
     }
 
+    // load new screen method.
     private void _load_screen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
@@ -210,13 +195,29 @@ public class Controller {
             Stage new_stage = (Stage) ((Button) evt.getSource()).getScene().getWindow();
             new_stage.setScene(new Scene(view));
             new_stage.show();
+            if (Objects.equals(name, "main.fxml")) {
+                this.set_emot();
+                this.emot_car.fire();
+            }
         } catch (Exception err) {
             System.err.println(err.getMessage());
         }
     }
 
-    @FXML
-    public void initialize() {
-        this.model = new BaseModel();
+    // validations.
+
+    private boolean _check_fields_not_empty(List<TextField> fields) {
+        for (TextField field : fields) {
+            if (field.getText().isEmpty()) {
+                throw new IllegalArgumentException("Un des champs obligatoire n'est pas renseigné");
+            }
+        }
+        return true;
+    }
+
+    private void _check_email_field(TextField email) {
+        if (!email.getText().contains("@") && (!email.getText().endsWith(".com") || !email.getText().endsWith(".fr"))) {
+            throw new IllegalArgumentException("Le champ email doit contenir un '@' et se terminer par '.com' ou '.fr'");
+        }
     }
 }
