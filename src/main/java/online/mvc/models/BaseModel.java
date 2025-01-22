@@ -6,11 +6,13 @@ import java.sql.SQLException;
 
 public class BaseModel {
     private Database database;
+    public int emot_id;
     public String resources_path;
 
     public BaseModel() {
         this.database = new Database();
-        this.resources_path = "file:///C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
+        this.emot_id = 1;
+        this.resources_path = "C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
     }
 
     public Database get_database() {

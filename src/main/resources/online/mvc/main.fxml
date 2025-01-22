@@ -99,19 +99,19 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label text="Prix du MDTE :" />
-                  <Text fx:id="emot_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="emot_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
                   <Label text="Prix des options :" />
-                  <Text fx:id="options_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="options_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
                   <Label text="Prix total :" />
-                  <Text fx:id="total_price" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="total_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>

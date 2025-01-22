@@ -117,20 +117,18 @@ public class Database {
     }
 
     public EMOT get_emot(int _id) throws SQLException {
-        List<EMOT> emot = new ArrayList<>();
         PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM emot WHERE id="+_id);
         ResultSet queryset = prepared_statement.executeQuery();
         if (queryset.next()) {
             int id = queryset.getInt("id");
             String name = queryset.getString("name");
             double price = queryset.getDouble("price");
-            emot.add(new EMOT(id, name, price));
             return new EMOT(id, name, price);
         }
         throw new SQLDataException("Aucune données dans la table 'EMOT'");
     }
 
-    public List<Options> get_options_of_emot(int ref, String option_type) throws SQLException {
+    public List<Options> get_emot_options(int ref, String option_type) throws SQLException {
         List<Options> options = new ArrayList<>();
         PreparedStatement prepared_statement = connection.prepareStatement(
                 "SELECT * FROM options WHERE emot_ref="+ref+" AND type='"+option_type+"'"
@@ -145,5 +143,21 @@ public class Database {
             options.add(new Options(id, name, type, price, this.get_emot(emot_ref)));
         }
         return options;
+    }
+
+    public Options get_emot_option(int ref, String option_type, String option_name) throws SQLException {
+        PreparedStatement prepared_statement = connection.prepareStatement(
+            "SELECT * FROM options WHERE emot_ref="+ref+" AND type='"+option_type+"' AND name='"+option_name+"'"
+        );
+        ResultSet queryset = prepared_statement.executeQuery();
+        if (queryset.next()) {
+            String id = queryset.getString("id");
+            String name = queryset.getString("name");
+            String type = queryset.getString("type");
+            double price = queryset.getDouble("price");
+            int emot_ref = queryset.getInt("emot_ref");
+            return new Options(id, name, type, price, this.get_emot(emot_ref));
+        }
+        throw new SQLDataException("Aucune données dans la table 'EMOT'");
     }
 }

@@ -21,11 +21,9 @@ import online.mvc.models.Customers;
 import online.mvc.models.Options;
 import online.mvc.utils.ScreenManager;
 
+import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Controller {
     private BaseModel model;
@@ -60,66 +58,32 @@ public class Controller {
     @FXML
     private ImageView main_frame;
 
-    @FXML
-    private ImageView color_0;
-    @FXML
-    private ImageView color_1;
-    @FXML
-    private ImageView color_2;
-    @FXML
-    private ImageView color_3;
-    @FXML
-    private ImageView color_4;
-    @FXML
-    private ImageView color_5;
-    @FXML
-    private ImageView color_6;
-    @FXML
-    private ImageView color_7;
-    @FXML
-    private ImageView color_8;
-
-    @FXML
-    private ImageView frame_0;
-    @FXML
-    private ImageView frame_1;
-    @FXML
-    private ImageView frame_2;
-    @FXML
-    private ImageView frame_3;
-    @FXML
-    private ImageView frame_4;
-    @FXML
-    private ImageView frame_5;
-
-    @FXML
-    private ImageView battery_0;
-    @FXML
-    private ImageView battery_1;
-    @FXML
-    private ImageView battery_2;
-
     // main.fxml methods.
     @FXML
     protected void set_emot(ActionEvent evt) throws SQLException {
         if (evt.getSource().equals(emot_car)) {
-            this.set_options_images(1, grid_option_1, "color");
-            this.set_options_images(1, grid_option_2, "rim");
-            this.set_options_images(1, grid_option_3, "battery");
+            this.model.emot_id = 1;
+            this.populate_interface(this.model.emot_id, grid_option_2, "rim");
         } else if (evt.getSource().equals(emot_bike)) {
-            this.set_options_images(2, grid_option_1, "color");
-            this.set_options_images(2, grid_option_2, "frame");
-            this.set_options_images(2, grid_option_3, "battery");
+            this.model.emot_id = 2;
+            this.populate_interface(this.model.emot_id, grid_option_2, "frame");
         } else if (evt.getSource().equals(emot_scooter)) {
-            this.set_options_images(3, grid_option_1, "color");
-            this.set_options_images(3, grid_option_2, "frame");
-            this.set_options_images(3, grid_option_3, "battery");
+            this.model.emot_id = 3;
+            this.populate_interface(this.model.emot_id, grid_option_2, "frame");
         }
+        this.set_default_image();
+        this.populate_interface(this.model.emot_id, grid_option_1, "color");
+        this.populate_interface(this.model.emot_id, grid_option_3, "battery");
     }
-    protected void set_options_images(int emot_id, GridPane grid, String option_type) throws SQLException {
-        this.reset_grid_cells(grid);
-        List<Options> options = this.model.get_database().get_options_of_emot(emot_id, option_type);
-        System.out.println(options);
+
+    protected void set_default_image() {
+        this.main_frame.setImage(new Image(this.model.resources_path+"img/"+this.model.emot_id+"-color-white.jpg"));
+    }
+
+    protected void populate_interface(int emot_id, GridPane grid, String option_type) throws SQLException {
+        this.reset_main_interface(grid);
+        List<Options> options = this.model.get_database().get_emot_options(emot_id, option_type);
+        System.out.println(options.getFirst().get_emot_ref().get_price());
         int i=0;
         String image_name;
         for (Options option : options) {
@@ -136,22 +100,32 @@ public class Controller {
     }
 
     @FXML
-    protected void update(MouseEvent event) {
+    protected void update(MouseEvent event) throws SQLException {
         if (event.getSource() instanceof ImageView image) {
-            System.out.println(image.getImage());
             if (!Objects.isNull(image.getImage())) {
-                System.out.println(image.getImage().getUrl());
-                System.out.println(image.getId());
+                String file_name = Paths.get(image.getImage().getUrl()).getFileName().toString();
+                List<String> options = new ArrayList<>(List.of(file_name.replace(".jpg", "").split("-")));
+                if (file_name.startsWith("color")) {
+                    this.main_frame.setImage(new Image(this.model.resources_path + "img/" + this.model.emot_id + "-" + file_name));
+                } else {options.removeFirst();}
+                options.addFirst(String.valueOf(this.model.emot_id));
+                this.model.get_database().get_emot_option(Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
+
             }
         }
     }
 
-    protected void reset_grid_cells(GridPane grid) {
+
+    protected void reset_main_interface(GridPane grid) {
         for (Node cell : grid.getChildren()) {
             if (cell instanceof ImageView image) {
                 image.setImage(null);
             }
         }
+        this.main_frame.setImage(null);
+        this.emot_price.setText("0");
+        this.options_price.setText("0");
+        this.total_price.setText("0");
     }
 
     @FXML
