@@ -116,17 +116,18 @@ public class Database {
         }
     }
 
-    public List<EMOT> get_emots() throws SQLException {
-        List<EMOT> emots = new ArrayList<>();
-        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM emot");
+    public EMOT get_emot(int _id) throws SQLException {
+        List<EMOT> emot = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM emot WHERE id="+_id);
         ResultSet queryset = prepared_statement.executeQuery();
-        while (queryset.next()) {
+        if (queryset.next()) {
             int id = queryset.getInt("id");
             String name = queryset.getString("name");
             double price = queryset.getDouble("price");
-            emots.add(new EMOT(id, name, price));
+            emot.add(new EMOT(id, name, price));
+            return new EMOT(id, name, price);
         }
-        return emots;
+        throw new SQLDataException("Aucune données dans la table 'EMOT'");
     }
 
     public List<Options> get_options_of_emot(int ref) throws SQLException {
@@ -138,8 +139,8 @@ public class Database {
             String name = queryset.getString("name");
             String type = queryset.getString("type");
             double price = queryset.getDouble("price");
-            EMOT emot_ref = (EMOT) queryset.getObject("emot_ref");
-            options.add(new Options(id, name, type, price, emot_ref));
+            int emot_ref = queryset.getInt("emot_ref");
+            options.add(new Options(id, name, type, price, this.get_emot(emot_ref)));
         }
         return options;
     }
