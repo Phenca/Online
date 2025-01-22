@@ -3,10 +3,12 @@ package online.mvc.models;
 import online.mvc.utils.Database;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class BaseModel {
     private Database database;
     public int emot_id;
+    public HashMap<String, Options> options_map = new HashMap<>();
     public String resources_path;
 
     public BaseModel() {

@@ -71,9 +71,9 @@ public class Controller {
             this.model.emot_id = 3;
             this.populate_interface(this.model.emot_id, grid_option_2, "frame");
         }
-        this.set_default_image();
         this.populate_interface(this.model.emot_id, grid_option_1, "color");
         this.populate_interface(this.model.emot_id, grid_option_3, "battery");
+        this.set_default_image();
     }
 
     protected void set_default_image() {
@@ -83,10 +83,14 @@ public class Controller {
     protected void populate_interface(int emot_id, GridPane grid, String option_type) throws SQLException {
         this.reset_main_interface(grid);
         List<Options> options = this.model.get_database().get_emot_options(emot_id, option_type);
-        System.out.println(options.getFirst().get_emot_ref().get_price());
+        this.emot_price.setText(String.valueOf(options.getFirst().get_emot_ref().get_price()));
         int i=0;
         String image_name;
         for (Options option : options) {
+            if (option.get_price() == 0) {
+                System.out.println(option);
+                this.model.options_map.put(option_type, option);
+            }
             if (grid.getChildren().get(i) instanceof ImageView image) {
                 if (option_type.equals("color")){
                     image_name = option.get_type()+"-"+option.get_name()+".jpg";
@@ -97,6 +101,20 @@ public class Controller {
                 i++;
             }
         }
+    }
+    protected void calculate_price() {
+        double price = 0;
+        for (Options option : this.model.options_map.values()) {
+            price += option.get_price();
+        }
+        this.options_price.setText(String.valueOf(price));
+        this.calculate_total();
+    }
+
+    protected void calculate_total() {
+        double emot_price = Double.parseDouble(this.emot_price.getText());
+        double options_price = Double.parseDouble(this.options_price.getText());
+        this.total_price.setText(String.valueOf(emot_price+options_price));
     }
 
     @FXML
@@ -109,8 +127,10 @@ public class Controller {
                     this.main_frame.setImage(new Image(this.model.resources_path + "img/" + this.model.emot_id + "-" + file_name));
                 } else {options.removeFirst();}
                 options.addFirst(String.valueOf(this.model.emot_id));
-                this.model.get_database().get_emot_option(Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
-
+                Options option = this.model.get_database().get_emot_option(Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
+                System.out.println(option);
+                this.model.options_map.replace(option.get_type(), option);
+                this.calculate_price();
             }
         }
     }
