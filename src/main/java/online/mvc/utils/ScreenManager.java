@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 public class ScreenManager {
     private static ScreenManager instance;
     private Stage primary_stage;
-    private Object current_controller;
+    private String current_view;
 
     private ScreenManager() {}
 
@@ -24,11 +24,11 @@ public class ScreenManager {
         return primary_stage;
     }
 
-    public void set_current_controller(Object controller) {
-        this.current_controller = controller;
+    public void set_current_view_name(String view) {
+        this.current_view = view;
     }
 
-    public Object get_current_controller() {
-        return current_controller;
+    public String get_current_view_name() {
+        return current_view;
     }
 }

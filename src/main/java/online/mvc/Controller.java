@@ -11,6 +11,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -19,7 +20,6 @@ import online.mvc.models.BaseModel;
 import online.mvc.models.Customers;
 import online.mvc.models.Options;
 import online.mvc.utils.ScreenManager;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +33,9 @@ public class Controller {
     @FXML
     public void initialize() {
         this.model = new BaseModel();
+        if (ScreenManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
+            this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
+        }
     }
 
     // main.fxml fields.
@@ -118,13 +121,27 @@ public class Controller {
         List<Options> options = this.model.get_database().get_options_of_emot(emot_id, option_type);
         System.out.println(options);
         int i=0;
+        String image_name;
         for (Options option : options) {
             if (grid.getChildren().get(i) instanceof ImageView image) {
-                String image_name = option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg";
-//                System.out.println(option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg");
+                if (option_type.equals("color")){
+                    image_name = option.get_type()+"-"+option.get_name()+".jpg";
+                } else {
+                    image_name = option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg";
+                }
                 image.setImage(new Image(this.model.resources_path+option.get_type()+"/"+image_name));
-                System.out.println(image.getImage().getUrl());
                 i++;
+            }
+        }
+    }
+
+    @FXML
+    protected void update(MouseEvent event) {
+        if (event.getSource() instanceof ImageView image) {
+            System.out.println(image.getImage());
+            if (!Objects.isNull(image.getImage())) {
+                System.out.println(image.getImage().getUrl());
+                System.out.println(image.getId());
             }
         }
     }
@@ -237,14 +254,14 @@ public class Controller {
     private void _load_screen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
+            ScreenManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
             AnchorPane view = fxmlloader.load();
-
             Stage new_stage = ScreenManager.get_instance().get_primary_stage();
             new_stage.setScene(new Scene(view));
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {
                 Controller controller = fxmlloader.getController();
-                controller.emot_bike.fire();
+                controller.emot_car.fire();
             }
         } catch (Exception err) {
             System.err.println(err.getMessage());
