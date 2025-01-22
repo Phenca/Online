@@ -115,4 +115,32 @@ public class Database {
             }
         }
     }
+
+    public List<EMOT> get_emots() throws SQLException {
+        List<EMOT> emots = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM emot");
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            int id = queryset.getInt("id");
+            String name = queryset.getString("name");
+            double price = queryset.getDouble("price");
+            emots.add(new EMOT(id, name, price));
+        }
+        return emots;
+    }
+
+    public List<Options> get_options_of_emot(int ref) throws SQLException {
+        List<Options> options = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM options WHERE emot_ref="+ref);
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            String id = queryset.getString("id");
+            String name = queryset.getString("name");
+            String type = queryset.getString("type");
+            double price = queryset.getDouble("price");
+            EMOT emot_ref = (EMOT) queryset.getObject("emot_ref");
+            options.add(new Options(id, name, type, price, emot_ref));
+        }
+        return options;
+    }
 }
