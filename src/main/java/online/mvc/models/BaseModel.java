@@ -6,9 +6,11 @@ import java.sql.SQLException;
 
 public class BaseModel {
     private Database database;
+    public String resources_path;
 
     public BaseModel() {
         this.database = new Database();
+        this.resources_path = "file:///C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
     }
 
     public Database get_database() {
