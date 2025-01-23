@@ -32,7 +32,7 @@ public class Controller {
     @FXML
     public void initialize() throws SQLException {
         this.model = new BaseModel();
-        System.out.println(this.model.get_database().get_orders());
+//        System.out.println(this.model.get_database().get_orders());
         if (ScreenManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
         }
@@ -151,9 +151,17 @@ public class Controller {
     }
 
     @FXML
-    protected void validate_order() {
-//        Orders order = new Orders()
-
+    protected void validate_order() throws SQLException {
+        String tracking_number = this.model.get_order_id();
+        Orders order = new Orders(
+                tracking_number,
+                this.model.logged_user,
+                this.model.get_database().get_emot_for_id(this.model.emot_id),
+                Double.parseDouble(this.total_price.getText()),
+                this.model.get_database().get_state_for_id(1),
+                tracking_number
+        );
+        this.model.get_database().add_order(order);
     }
 
     // login.fxml fields.

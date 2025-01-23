@@ -67,9 +67,9 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'Customer'");
     }
 
-    public OrderStates get_state_for_id(String state_id) throws SQLException {
+    public OrderStates get_state_for_id(int state_id) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement(
-                "SELECT * FROM ordersstates WHERE id='"+state_id+"'"
+                "SELECT * FROM ordersstates WHERE id="+state_id
         );
         ResultSet queryset = prepared_statement.executeQuery();
         if (queryset.next()) {
@@ -120,7 +120,7 @@ public class Database {
             Customers client_ref = this.get_customer_for_id(queryset.getString("client_ref"));
             EMOT emot_ref = this.get_emot_for_id(queryset.getInt("emot_ref"));
             double total_price = queryset.getDouble("total_price");
-            OrderStates state = this.get_state_for_id(queryset.getString("state"));
+            OrderStates state = this.get_state_for_id(queryset.getInt("state"));
             String tracking_number = queryset.getString("tracking_number");
             orders.add(new Orders(id, client_ref, emot_ref, total_price, state, tracking_number));
         }
@@ -138,7 +138,7 @@ public class Database {
             Customers client_ref = this.get_customer_for_id(queryset.getString("client_ref"));
             EMOT emot_ref = this.get_emot_for_id(queryset.getInt("emot_ref"));
             double total_price = queryset.getDouble("total_price");
-            OrderStates state = this.get_state_for_id(queryset.getString("state"));
+            OrderStates state = this.get_state_for_id(queryset.getInt("state"));
             String tracking_number = queryset.getString("tracking_number");
             return new Orders(id, client_ref, emot_ref, total_price, state, tracking_number);
         }
@@ -163,21 +163,19 @@ public class Database {
 
 
 
-    public void add_order(ArrayList<Orders> data) throws SQLException {
+    public void add_order(Orders order) throws SQLException {
         String sql = "INSERT INTO orders (id, client_ref, emot_ref, total_price, state, tracking_number) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
-        for (Orders order : data) {
-            try {
-                prepared_statement.setString(1, order.get_id());
-                prepared_statement.setString(2, order.get_customers_ref().get_id());
-                prepared_statement.setInt(3, order.get_emot_ref().get_id());
-                prepared_statement.setDouble(3, order.get_total_price());
-                prepared_statement.setInt(3, order.get_state().get_id());
-                prepared_statement.setString(3, order.get_tracking_number());
-                prepared_statement.executeUpdate();
-            } catch (Exception err) {
-                System.err.println(err.getMessage());
-            }
+        try {
+            prepared_statement.setString(1, order.get_id());
+            prepared_statement.setString(2, order.get_customers_ref().get_id());
+            prepared_statement.setInt(3, order.get_emot_ref().get_id());
+            prepared_statement.setDouble(3, order.get_total_price());
+            prepared_statement.setInt(3, order.get_state().get_id());
+            prepared_statement.setString(3, order.get_tracking_number());
+            prepared_statement.executeUpdate();
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
         }
     }
 

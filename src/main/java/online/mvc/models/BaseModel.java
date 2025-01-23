@@ -2,8 +2,11 @@ package online.mvc.models;
 
 import online.mvc.utils.Database;
 
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class BaseModel {
     private Database database;
@@ -23,14 +26,25 @@ public class BaseModel {
     }
 
     public String get_customer_id(String email) throws SQLException {
-        int id = Integer.parseInt(this.database.get_id_or_email_existing_error(email).replace("CUS", ""));
-        System.out.println("Current last id : " + id);
-        String new_last_id = "CUS" + id + 1;
-        System.out.println("New last id : " + new_last_id);
-        return new_last_id;
+        List<Customers> customers = this.database.get_customers();
+        for (Customers customer : customers) {
+            if (Objects.equals(customer.get_email(), email)) {
+                throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
+            }
+            if (Objects.equals(customers.getLast(), customer)) {
+                int id = Integer.parseInt(customer.get_id().replace("CUS", ""));
+                return "CUS" + id + 1;
+            }
+        }
+        throw new SQLDataException("Aucune données dans la table 'Customers'");
     }
 
-    public String get_order_id() {
-        return "";
+    public String get_order_id() throws SQLException {
+        List<Orders> orders = this.database.get_orders();
+        if (!orders.isEmpty()) {
+            int id = Integer.parseInt(orders.getLast().get_id().replace("CUS", ""));
+            return "CMD" + id + 1;
+        }
+        throw new SQLDataException("Aucune données dans la table 'Orders'");
     }
 }
