@@ -52,7 +52,7 @@ public class Database {
 
     public Customers get_customer_for_id(String customer_id) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement(
-            "SELECT * FROM customers WHERE id'"+customer_id+"'"
+            "SELECT * FROM customers WHERE id='"+customer_id+"'"
         );
         ResultSet queryset = prepared_statement.executeQuery();
         if (queryset.next()) {
@@ -69,7 +69,7 @@ public class Database {
 
     public OrderStates get_state_for_id(String state_id) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement(
-                "SELECT * FROM ordersstates WHERE id'"+state_id+"'"
+                "SELECT * FROM ordersstates WHERE id='"+state_id+"'"
         );
         ResultSet queryset = prepared_statement.executeQuery();
         if (queryset.next()) {
@@ -193,7 +193,7 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'EMOT'");
     }
 
-    public List<Options> get_emot_for_id_options(int ref, String option_type) throws SQLException {
+    public List<Options> get_emot_options(int ref, String option_type) throws SQLException {
         List<Options> options = new ArrayList<>();
         PreparedStatement prepared_statement = connection.prepareStatement(
                 "SELECT * FROM options WHERE emot_ref="+ref+" AND type='"+option_type+"'"
@@ -210,7 +210,7 @@ public class Database {
         return options;
     }
 
-    public Options get_emot_for_id_option(int ref, String option_type, String option_name) throws SQLException {
+    public Options get_emot_option(int ref, String option_type, String option_name) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement(
             "SELECT * FROM options WHERE emot_ref="+ref+" AND type='"+option_type+"' AND name='"+option_name+"'"
         );
