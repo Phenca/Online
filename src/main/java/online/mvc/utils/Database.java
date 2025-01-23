@@ -89,14 +89,29 @@ public class Database {
             String id = queryset.getString("id");
             Customers client_ref = (Customers) queryset.getObject("client_ref");
             EMOT emot_ref = (EMOT) queryset.getObject("emot_ref");
-            List<Options> options = (List<Options>) queryset.getObject("options");
             double total_price = queryset.getDouble("total_price");
             OrderStates state = (OrderStates) queryset.getObject("state");
             String tracking_number = queryset.getString("tracking_number");
-            orders.add(new Orders(id, client_ref, emot_ref, options, total_price, state, tracking_number));
+            orders.add(new Orders(id, client_ref, emot_ref, total_price, state, tracking_number));
         }
         return orders;
     }
+
+    public List<Orders_Options> get_orders_options(String _order_id) throws SQLException {
+        List<Orders_Options> orders_options = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement(
+            "SELECT * FROM orders_options WHERE order_id='"+_order_id+"'"
+        );
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            String order_id = queryset.getString("order_id");
+            String option_id = queryset.getString("option_id");
+            orders_options.add(new Orders_Options(order_id, option_id));
+        }
+        return orders_options;
+    }
+
+
 
     public void add_order(ArrayList<Orders> data) throws SQLException {
         String sql = "INSERT INTO orders (id, client_ref, emot_ref, total_price, state, tracking_number) VALUES (?, ?, ?, ?, ?, ?)";

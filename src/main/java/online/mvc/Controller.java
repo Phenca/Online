@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import online.mvc.models.BaseModel;
 import online.mvc.models.Customers;
 import online.mvc.models.Options;
+import online.mvc.models.Orders;
 import online.mvc.utils.ScreenManager;
 
 import java.nio.file.Paths;
@@ -29,8 +30,9 @@ public class Controller {
     private BaseModel model;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         this.model = new BaseModel();
+        System.out.println(this.model.get_database().get_orders_options("CMD000"));
         if (ScreenManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
         }
@@ -150,6 +152,7 @@ public class Controller {
 
     @FXML
     protected void validate_order() {
+//        Orders order = new Orders()
 
     }
 
@@ -177,6 +180,7 @@ public class Controller {
                     if (Objects.equals(customer.get_email(), login_email_field.getText())) {
                         if (Objects.equals(customer.get_password(), login_password_field.getText())) {
                             System.out.println("Authentication successful !");
+                            this.model.logged_user = customer;
                             _load_screen(evt, "main.fxml");
                             return true;
                         }

@@ -6,16 +6,16 @@ public class Orders {
     private String id;
     private Customers customers_ref;
     private EMOT emot_ref;
-    private List<Options> options;
+//    private List<Options> options;
     private double total_price;
     private OrderStates state;
     private String tracking_number;
 
-    public Orders(String id, Customers customers_ref, EMOT emot_ref, List<Options> options, double total_price, OrderStates state, String tracking_number) {
+    public Orders(String id, Customers customers_ref, EMOT emot_ref, double total_price, OrderStates state, String tracking_number) {
         this.id = id;
         this.customers_ref = customers_ref;
         this.emot_ref = emot_ref;
-        this.options = options;
+//        this.options = options;
         this.total_price = total_price;
         this.state = state;
         this.tracking_number = tracking_number;
@@ -45,13 +45,13 @@ public class Orders {
         this.emot_ref = emot_ref;
     }
 
-    public List<Options> get_options() {
-        return options;
-    }
-
-    public void set_options(List<Options> options) {
-        this.options = options;
-    }
+//    public List<Options> get_options() {
+//        return options;
+//    }
+//
+//    public void set_options(List<Options> options) {
+//        this.options = options;
+//    }
 
     public double get_total_price() {
         return total_price;
@@ -79,6 +79,6 @@ public class Orders {
 
     @Override
     public String toString() {
-        return id + ";" + customers_ref + ";" + emot_ref + ";" + options + ";" + total_price + ";" + state + ";" + tracking_number;
+        return id + ";" + customers_ref + ";" + emot_ref  + ";" + total_price + ";" + state + ";" + tracking_number;
     }
 }

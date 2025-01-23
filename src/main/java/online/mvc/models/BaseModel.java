@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class BaseModel {
     private Database database;
+    public Customers logged_user;
     public int emot_id;
     public HashMap<String, Options> options_map = new HashMap<>();
     public String resources_path;
@@ -27,5 +28,9 @@ public class BaseModel {
         String new_last_id = "CUS" + id + 1;
         System.out.println("New last id : " + new_last_id);
         return new_last_id;
+    }
+
+    public String get_order_id() {
+        return "";
     }
 }
