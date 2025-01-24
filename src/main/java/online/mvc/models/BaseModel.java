@@ -1,6 +1,7 @@
 package online.mvc.models;
 
 import online.mvc.utils.Database;
+import online.mvc.utils.InstanceManager;
 
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -9,13 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class BaseModel {
-    private Database database;
+    private final Database database;
     public int emot_id;
     public HashMap<String, Options> options_map = new HashMap<>();
     public String resources_path;
 
     public BaseModel() {
-        this.database = new Database();
+        this.database = InstanceManager.get_instance().get_database();
         this.emot_id = 1;
         this.resources_path = "C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
     }
@@ -25,6 +26,7 @@ public class BaseModel {
     }
 
     public String get_customer_id(String email) throws SQLException {
+//        List<Customers> customers = this.database.get_customers();
         List<Customers> customers = this.database.get_customers();
         for (Customers customer : customers) {
             if (Objects.equals(customer.get_email(), email)) {

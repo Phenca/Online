@@ -8,8 +8,11 @@ public class InstanceManager {
     private Stage primary_stage;
     private String current_view;
     private Customers logged_user;
+    private final Database database;
 
-    private InstanceManager() {}
+    private InstanceManager() {
+        this.database = new Database();
+    }
 
     public static InstanceManager get_instance() {
         if (instance == null) {
@@ -40,5 +43,9 @@ public class InstanceManager {
 
     public void set_logged_user(Customers logged_user) {
         this.logged_user = logged_user;
+    }
+
+    public Database get_database() {
+        return database;
     }
 }

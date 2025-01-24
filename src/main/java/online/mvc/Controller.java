@@ -30,9 +30,8 @@ public class Controller {
     private BaseModel model;
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
         this.model = new BaseModel();
-//        System.out.println(this.model.get_database().get_orders());
         if (InstanceManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
         }
