@@ -20,7 +20,7 @@ import online.mvc.models.BaseModel;
 import online.mvc.models.Customers;
 import online.mvc.models.Options;
 import online.mvc.models.Orders;
-import online.mvc.utils.ScreenManager;
+import online.mvc.utils.InstanceManager;
 
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ public class Controller {
     public void initialize() throws SQLException {
         this.model = new BaseModel();
 //        System.out.println(this.model.get_database().get_orders());
-        if (ScreenManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
+        if (InstanceManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
         }
     }
@@ -86,11 +86,11 @@ public class Controller {
         this.reset_main_interface(grid);
         List<Options> options = this.model.get_database().get_emot_options(emot_id, option_type);
         this.emot_price.setText(String.valueOf(options.getFirst().get_emot_ref().get_price()));
+        this.total_price.setText(String.valueOf(options.getFirst().get_emot_ref().get_price()));
         int i=0;
         String image_name;
         for (Options option : options) {
             if (option.get_price() == 0) {
-                System.out.println(option);
                 this.model.options_map.put(option_type, option);
             }
             if (grid.getChildren().get(i) instanceof ImageView image) {
@@ -155,7 +155,7 @@ public class Controller {
         String tracking_number = this.model.get_order_id();
         Orders order = new Orders(
                 tracking_number,
-                this.model.logged_user,
+                InstanceManager.get_instance().get_logged_user(),
                 this.model.get_database().get_emot_for_id(this.model.emot_id),
                 Double.parseDouble(this.total_price.getText()),
                 this.model.get_database().get_state_for_id(1),
@@ -188,7 +188,7 @@ public class Controller {
                     if (Objects.equals(customer.get_email(), login_email_field.getText())) {
                         if (Objects.equals(customer.get_password(), login_password_field.getText())) {
                             System.out.println("Authentication successful !");
-                            this.model.logged_user = customer;
+                            InstanceManager.get_instance().set_logged_user(customer);
                             _load_screen(evt, "main.fxml");
                             return true;
                         }
@@ -260,9 +260,9 @@ public class Controller {
     private void _load_screen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
-            ScreenManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
+            InstanceManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
             AnchorPane view = fxmlloader.load();
-            Stage new_stage = ScreenManager.get_instance().get_primary_stage();
+            Stage new_stage = InstanceManager.get_instance().get_primary_stage();
             new_stage.setScene(new Scene(view));
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {

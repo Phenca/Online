@@ -24,4 +24,9 @@ public class OrderStates {
     public void set_name(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return id + ";" + name;
+    }
 }

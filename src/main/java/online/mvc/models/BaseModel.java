@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class BaseModel {
     private Database database;
-    public Customers logged_user;
     public int emot_id;
     public HashMap<String, Options> options_map = new HashMap<>();
     public String resources_path;
@@ -42,7 +41,7 @@ public class BaseModel {
     public String get_order_id() throws SQLException {
         List<Orders> orders = this.database.get_orders();
         if (!orders.isEmpty()) {
-            int id = Integer.parseInt(orders.getLast().get_id().replace("CUS", ""));
+            int id = Integer.parseInt(orders.getLast().get_id().replace("CMD", ""));
             return "CMD" + id + 1;
         }
         throw new SQLDataException("Aucune données dans la table 'Orders'");
