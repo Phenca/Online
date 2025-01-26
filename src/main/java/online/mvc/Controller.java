@@ -1,14 +1,13 @@
 package online.mvc;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,10 +29,12 @@ public class Controller {
     private BaseModel model;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         this.model = new BaseModel();
         if (InstanceManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
+        } else if (InstanceManager.get_instance().get_current_view_name().endsWith("orders-tracking.fxml")) {
+            this._set_table_view();
         }
     }
 
@@ -151,16 +152,23 @@ public class Controller {
 
     @FXML
     protected void validate_order() throws SQLException {
-        String tracking_number = this.model.get_order_id();
-        Orders order = new Orders(
-                tracking_number,
-                InstanceManager.get_instance().get_logged_user(),
-                this.model.get_database().get_emot_for_id(this.model.emot_id),
-                Double.parseDouble(this.total_price.getText()),
-                this.model.get_database().get_state_for_id(1),
-                tracking_number
-        );
-        this.model.get_database().add_order(order);
+        Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnect_popup.setTitle("Confirmation de commande");
+        disconnect_popup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
+        disconnect_popup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> user_action = disconnect_popup.showAndWait();
+        if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
+            String tracking_number = this.model.get_order_id();
+            Orders order = new Orders(
+                    tracking_number,
+                    InstanceManager.get_instance().get_logged_user(),
+                    this.model.get_database().get_emot_for_id(this.model.emot_id),
+                    Double.parseDouble(this.total_price.getText()),
+                    this.model.get_database().get_state_for_id(1),
+                    tracking_number
+            );
+            this.model.get_database().add_order(order);
+        }
     }
 
     // login.fxml fields.
@@ -188,7 +196,7 @@ public class Controller {
                         if (Objects.equals(customer.get_password(), login_password_field.getText())) {
                             System.out.println("Authentication successful !");
                             InstanceManager.get_instance().set_logged_user(customer);
-                            _load_screen(evt, "main.fxml");
+                            _load_screen(evt, "user-choice.fxml");
                             return true;
                         }
                     }
@@ -253,6 +261,37 @@ public class Controller {
         if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
             _load_screen(evt, "login.fxml");
         }
+    }
+
+    // user-choice methods.
+    @FXML
+    protected void display_main(ActionEvent evt) {
+        _load_screen(evt, "main.fxml");
+    }
+
+    @FXML
+    protected void display_orders(ActionEvent evt) {
+        _load_screen(evt, "orders-tracking.fxml");
+    }
+
+    @FXML
+    protected void export_orders(ActionEvent evt) {
+        System.out.println("Méthode pour exporter les commandes avec le statut 'created'");
+    }
+
+    // orders-tracking fields.
+    @FXML
+    private TableView<Orders> orders_table;
+
+    // orders-tracking methods.
+    @FXML
+    protected void back_to_menu(ActionEvent evt) {
+        _load_screen(evt, "user-choice.fxml");
+    }
+
+    private void _set_table_view() throws SQLException {
+        ObservableList<Orders> orders_list = FXCollections.observableArrayList(this.model.get_database().get_orders());
+        this.orders_table.setItems(orders_list);
     }
 
     // load new screen method.
