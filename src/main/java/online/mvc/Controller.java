@@ -274,7 +274,15 @@ public class Controller {
     }
 
     @FXML
-    protected void export_orders(ActionEvent evt) {
+    protected void export_orders(ActionEvent evt) throws SQLException {
+        List<Orders> orders = this.model.get_database().get_orders_to_export(1);
+        System.out.println(orders);
+        for (Orders order : orders) {
+            List<Orders_Options> orders_options = this.model.get_database().get_orders_options(order.get_id());
+            System.out.println(orders_options);
+            // Ici, écriture dans le fichiers orders.txt
+        }
+
         System.out.println("Méthode pour exporter les commandes avec le statut 'created'");
     }
 

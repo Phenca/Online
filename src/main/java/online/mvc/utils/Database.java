@@ -128,6 +128,22 @@ public class Database {
         return orders;
     }
 
+    public List<Orders> get_orders_to_export(int _state) throws SQLException {
+        List<Orders> orders = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM orders WHERE state="+_state);
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            String id = queryset.getString("id");
+            Customers client_ref = this.get_customer_for_id(queryset.getString("client_ref"));
+            EMOT emot_ref = this.get_emot_for_id(queryset.getInt("emot_ref"));
+            double total_price = queryset.getDouble("total_price");
+            OrderStates state = this.get_state_for_id(queryset.getInt("state"));
+            String tracking_number = queryset.getString("tracking_number");
+            orders.add(new Orders(id, client_ref, emot_ref, total_price, state, tracking_number));
+        }
+        return orders;
+    }
+
     public Orders get_order_for_id(String order_id) throws SQLException {
         PreparedStatement prepared_statement = connection.prepareStatement(
             "SELECT * FROM orders WHERE id='"+order_id+"'"
