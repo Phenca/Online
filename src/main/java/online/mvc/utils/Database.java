@@ -81,21 +81,6 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'OrdersStates'");
     }
 
-
-    public String get_id_or_email_existing_error(String email) throws SQLException {
-        PreparedStatement prepared_statement = connection.prepareStatement("SELECT * FROM customers");
-        ResultSet queryset = prepared_statement.executeQuery();
-        while (queryset.next()) {
-            if (Objects.equals(queryset.getString("email"), email)) {
-                throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
-            }
-            if (queryset.last()) {
-                return queryset.getString("id").replace("CUS", "");
-            }
-        }
-        throw new SQLDataException("Aucune données dans la table 'Customer'");
-    }
-
     public void add_customer(Customers data) throws SQLException {
         String sql = "INSERT INTO customers (id, firstname, lastname, email, delivery_address) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
@@ -149,7 +134,6 @@ public class Database {
             "SELECT * FROM orders WHERE id='"+order_id+"'"
         );
         ResultSet queryset = prepared_statement.executeQuery();
-        List<Customers> customers = get_customers();
         if (queryset.next()) {
             String id = queryset.getString("id");
             Customers client_ref = this.get_customer_for_id(queryset.getString("client_ref"));
