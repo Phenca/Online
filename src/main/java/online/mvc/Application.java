@@ -14,7 +14,8 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("login.fxml"));
         InstanceManager.get_instance().set_current_view_name(fxmlLoader.getLocation().getFile());
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Hello!");
+        scene.getStylesheets().add(getClass().getResource("style/styles.css").toExternalForm());
+        stage.setTitle("Moyens de transport électrique");
         stage.setScene(scene);
         stage.show();
     }

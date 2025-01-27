@@ -1,0 +1,116 @@
+/* Global Styles */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 16px;
+    -fx-background-color: #f8f9fa; /* Bootstrap Light Background */
+}
+
+/* GridPane */
+.grid-pane {
+    -fx-hgap: 16px;
+    -fx-vgap: 16px;
+    -fx-padding: 16px;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #0d6efd; /* Primary Button */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 2, 2);
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3; /* Hover Effect */
+}
+
+.button:pressed {
+    -fx-background-color: #003a75; /* Active State */
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8px;
+    -fx-padding: 8px;
+    -fx-background-radius: 8px;
+}
+
+.text-field:focused {
+    -fx-border-color: #0d6efd; /* Bootstrap Primary Color */
+    -fx-border-width: 2px;
+}
+
+/* Labels */
+.label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529; /* Dark Text */
+}
+
+/* Table View */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 2, 2);
+}
+
+.table-view .column-header {
+    -fx-background-color: #e9ecef; /* Light Gray */
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057; /* Darker Gray */
+}
+
+.table-row-cell {
+    -fx-padding: 8px;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #0d6efd; /* Selected Row Background */
+    -fx-text-fill: white;
+}
+
+/* Alert Popups */
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.dialog-pane .content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #212529; /* Dark Text */
+}
+
+/* ImageView */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.1, 2, 2);
+    -fx-border-color: #dee2e6; /* Light Border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+}
+
+/* Alert Confirmation Buttons */
+.dialog-pane .button-bar .button {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.dialog-pane .button-bar .button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.dialog-pane .button-bar .button:pressed {
+    -fx-background-color: #003a75;
+}

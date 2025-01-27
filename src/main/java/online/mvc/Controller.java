@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,10 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import online.mvc.models.BaseModel;
-import online.mvc.models.Customers;
-import online.mvc.models.Options;
-import online.mvc.models.Orders;
+import online.mvc.models.*;
 import online.mvc.utils.InstanceManager;
 
 import java.nio.file.Paths;
@@ -168,6 +166,7 @@ public class Controller {
                     tracking_number
             );
             this.model.get_database().add_order(order);
+            this.model.get_database().add_orders_options(order.get_id(), this.model.options_map);
         }
     }
 
@@ -282,6 +281,19 @@ public class Controller {
     // orders-tracking fields.
     @FXML
     private TableView<Orders> orders_table;
+    @FXML
+    private TableColumn<Orders, String> id_column = new TableColumn<>("id");
+    @FXML
+    private TableColumn<Orders, Customers> customer_ref_column = new TableColumn<>("customers_ref");
+    @FXML
+    private TableColumn<Orders, EMOT> emot_ref_column = new TableColumn<>("emot_ref");
+    @FXML
+    private TableColumn<Orders, Double> price_column = new TableColumn<>("total_price");
+    @FXML
+    private TableColumn<Orders, OrderStates> state_column = new TableColumn<>("state");
+    @FXML
+    private TableColumn<Orders, String> tracking_number_column = new TableColumn<>("tracking_number");
+
 
     // orders-tracking methods.
     @FXML
@@ -290,7 +302,14 @@ public class Controller {
     }
 
     private void _set_table_view() throws SQLException {
+        id_column.setCellValueFactory(new PropertyValueFactory<>("id"));
+        customer_ref_column.setCellValueFactory(new PropertyValueFactory<>("customers_ref"));
+        emot_ref_column.setCellValueFactory(new PropertyValueFactory<>("emot_ref"));
+        price_column.setCellValueFactory(new PropertyValueFactory<>("total_price"));
+        state_column.setCellValueFactory(new PropertyValueFactory<>("state"));
+        tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("tracking_number"));
         ObservableList<Orders> orders_list = FXCollections.observableArrayList(this.model.get_database().get_orders());
+        System.out.println(orders_list);
         this.orders_table.setItems(orders_list);
     }
 
@@ -301,7 +320,9 @@ public class Controller {
             InstanceManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
             AnchorPane view = fxmlloader.load();
             Stage new_stage = InstanceManager.get_instance().get_primary_stage();
-            new_stage.setScene(new Scene(view));
+            Scene scene = new Scene(view);
+            scene.getStylesheets().add(getClass().getResource("style/styles.css").toExternalForm());
+            new_stage.setScene(scene);
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {
                 Controller controller = fxmlloader.getController();

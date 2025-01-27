@@ -4,6 +4,7 @@ import online.mvc.models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -145,24 +146,6 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'Orders'");
     }
 
-    public List<Orders_Options> get_orders_options(String _order_id) throws SQLException {
-        List<Orders_Options> orders_options = new ArrayList<>();
-        PreparedStatement prepared_statement = connection.prepareStatement(
-            "SELECT * FROM orders_options WHERE order_id='"+_order_id+"'"
-        );
-        ResultSet queryset = prepared_statement.executeQuery();
-        while (queryset.next()) {
-            Orders order_id = this.get_order_for_id(queryset.getString("order_id"));
-//            String order_id = queryset.getString("order_id");
-//            String option_id = queryset.getString("option_id");
-            Options option_id = this.get_option_for_id(queryset.getString("option_id"));
-            orders_options.add(new Orders_Options(order_id, option_id));
-        }
-        return orders_options;
-    }
-
-
-
     public void add_order(Orders order) throws SQLException {
         System.out.println(order);
         String sql = "INSERT INTO orders (id, client_ref, emot_ref, total_price, state, tracking_number) VALUES (?, ?, ?, ?, ?, ?)";
@@ -178,6 +161,34 @@ public class Database {
         } catch (Exception err) {
             System.err.println(err.getMessage());
         }
+    }
+
+    public void add_orders_options(String order_id, HashMap<String, Options> options) throws SQLException {
+        for (Options option : options.values()) {
+            String sql = "INSERT INTO orders_options (order_id, option_id) VALUES (?, ?)";
+            PreparedStatement prepared_statement = connection.prepareStatement(sql);
+            try {
+                prepared_statement.setString(1, order_id);
+                prepared_statement.setString(2, option.get_id());
+                prepared_statement.executeUpdate();
+            } catch (Exception err) {
+                System.err.println(err.getMessage());
+            }
+        }
+    }
+
+    public List<Orders_Options> get_orders_options(String _order_id) throws SQLException {
+        List<Orders_Options> orders_options = new ArrayList<>();
+        PreparedStatement prepared_statement = connection.prepareStatement(
+                "SELECT * FROM orders_options WHERE order_id='"+_order_id+"'"
+        );
+        ResultSet queryset = prepared_statement.executeQuery();
+        while (queryset.next()) {
+            Orders order_id = this.get_order_for_id(queryset.getString("order_id"));
+            Options option_id = this.get_option_for_id(queryset.getString("option_id"));
+            orders_options.add(new Orders_Options(order_id, option_id));
+        }
+        return orders_options;
     }
 
     public EMOT get_emot_for_id(int _id) throws SQLException {
