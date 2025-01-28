@@ -157,7 +157,6 @@ public class Database {
     }
 
     public void add_order(Orders order) throws SQLException {
-        System.out.println(order);
         String sql = "INSERT INTO orders (id, client_ref, emot_ref, total_price, state, tracking_number) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
         try {
@@ -171,6 +170,17 @@ public class Database {
         } catch (Exception err) {
             System.err.println(err.getMessage());
             throw new SQLException("La création de la commande à échoué, veuillez réessayer");
+        }
+    }
+
+    public void update_order(String id, int state) throws SQLException {
+        String sql = "UPDATE orders SET state="+state+" WHERE id='"+id+"'";
+        PreparedStatement prepared_statement = connection.prepareStatement(sql);
+        try {
+            prepared_statement.executeUpdate();
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
+            throw new SQLException("La mise à jour de la commande '"+id+"' à échoué");
         }
     }
 

@@ -303,7 +303,10 @@ public class Controller {
                     }
                     line.append(order_option.getOption_id());
                 }
-                if (export_orders.exists()) {writer.write(line+"\n");writer.write(line+"\n");}
+                if (export_orders.exists()) {
+                    writer.write(line+"\n");
+                    this.model.get_database().update_order(order.getId(), 2);
+                }
             }
             writer.close();
         } catch (SQLException err) {
