@@ -1,6 +1,5 @@
 package online.mvc;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +37,7 @@ public class Controller {
         if (InstanceManager.get_instance().get_current_view_name().endsWith("main.fxml")) {
             this.main_frame.setImage(new Image("C:\\Users\\Soran\\IdeaProjects\\Online\\src\\main\\resources\\online\\mvc\\img\\1-color-white.jpg"));
         } else if (InstanceManager.get_instance().get_current_view_name().endsWith("orders-tracking.fxml")) {
-            this._set_table_view();
+            this.setTableView();
         }
     }
 
@@ -71,81 +70,79 @@ public class Controller {
     @FXML
     protected void set_emot(ActionEvent evt) throws SQLException {
         if (evt.getSource().equals(emot_car)) {
-            this.model.emot_id = 1;
-            this.populate_interface(this.model.emot_id, grid_option_2, "rim");
+            this.model.emotId = 1;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "rim");
         } else if (evt.getSource().equals(emot_bike)) {
-            this.model.emot_id = 2;
-            this.populate_interface(this.model.emot_id, grid_option_2, "frame");
+            this.model.emotId = 2;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
         } else if (evt.getSource().equals(emot_scooter)) {
-            this.model.emot_id = 3;
-            this.populate_interface(this.model.emot_id, grid_option_2, "frame");
+            this.model.emotId = 3;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
         }
-        this.populate_interface(this.model.emot_id, grid_option_1, "color");
-        this.populate_interface(this.model.emot_id, grid_option_3, "battery");
-        this.set_default_image();
+        this.populateMainInterface(this.model.emotId, grid_option_1, "color");
+        this.populateMainInterface(this.model.emotId, grid_option_3, "battery");
+        this.setDefaultImage();
     }
 
-    protected void set_default_image() {
-        this.main_frame.setImage(new Image(this.model.resources_path+"img/"+this.model.emot_id+"-color-white.jpg"));
+    protected void setDefaultImage() {
+        this.main_frame.setImage(new Image(this.model.resourcesPath +"img/"+this.model.emotId +"-color-white.jpg"));
     }
 
-    protected void populate_interface(int emot_id, GridPane grid, String option_type) throws SQLException {
-        this.reset_main_interface(grid);
-        List<Options> options = this.model.get_database().get_emot_options_for_type(emot_id, option_type);
+    protected void populateMainInterface(int emot_id, GridPane grid, String option_type) throws SQLException {
+        this.resetMainInterface(grid);
+        List<Options> options = this.model.getDatabase().getEmotOptionsForType(emot_id, option_type);
         this.emot_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
         this.total_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
         int i=0;
-        String image_name;
+        String imageName;
         for (Options option : options) {
             if (option.getPrice() == 0) {
-                this.model.options_map.put(option_type, option);
+                this.model.optionsMap.put(option_type, option);
             }
             if (grid.getChildren().get(i) instanceof ImageView image) {
                 if (option_type.equals("color")){
-                    image_name = option.getType()+"-"+option.getName()+".jpg";
+                    imageName = option.getType()+"-"+option.getName()+".jpg";
                 } else {
-                    image_name = option.getEmot_ref().getId()+"-"+option.getType()+"-"+option.getName()+".jpg";
+                    imageName = option.getEmot_ref().getId()+"-"+option.getType()+"-"+option.getName()+".jpg";
                 }
-                image.setImage(new Image(this.model.resources_path+option.getType()+"/"+image_name));
+                image.setImage(new Image(this.model.resourcesPath +option.getType()+"/"+imageName));
                 i++;
             }
         }
     }
-    protected void calculate_price() {
+    protected void calculatePrice() {
         double price = 0;
-        for (Options option : this.model.options_map.values()) {
+        for (Options option : this.model.optionsMap.values()) {
             price += option.getPrice();
         }
         this.options_price.setText(String.valueOf(price));
-        this.calculate_total();
+        this.calculateTotal();
     }
 
-    protected void calculate_total() {
-        double emot_price = Double.parseDouble(this.emot_price.getText());
-        double options_price = Double.parseDouble(this.options_price.getText());
-        this.total_price.setText(String.valueOf(emot_price+options_price));
+    protected void calculateTotal() {
+        double emotPrice = Double.parseDouble(this.emot_price.getText());
+        double optionsPrice = Double.parseDouble(this.options_price.getText());
+        this.total_price.setText(String.valueOf(emotPrice+optionsPrice));
     }
 
     @FXML
-    protected void update(MouseEvent event) throws SQLException {
+    protected void update_main_interface(MouseEvent event) throws SQLException {
         if (event.getSource() instanceof ImageView image) {
             if (!Objects.isNull(image.getImage())) {
-                String file_name = Paths.get(image.getImage().getUrl()).getFileName().toString();
-                List<String> options = new ArrayList<>(List.of(file_name.replace(".jpg", "").split("-")));
-                if (file_name.startsWith("color")) {
-                    this.main_frame.setImage(new Image(this.model.resources_path + "img/" + this.model.emot_id + "-" + file_name));
+                String fileName = Paths.get(image.getImage().getUrl()).getFileName().toString();
+                List<String> options = new ArrayList<>(List.of(fileName.replace(".jpg", "").split("-")));
+                if (fileName.startsWith("color")) {
+                    this.main_frame.setImage(new Image(this.model.resourcesPath + "img/" + this.model.emotId + "-" + fileName));
                 } else {options.removeFirst();}
-                options.addFirst(String.valueOf(this.model.emot_id));
-                Options option = this.model.get_database().get_option_for_parameters(null, Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
-                System.out.println(option);
-                this.model.options_map.replace(option.getType(), option);
-                this.calculate_price();
+                options.addFirst(String.valueOf(this.model.emotId));
+                Options option = this.model.getDatabase().getOptionForParameters(null, Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
+                this.model.optionsMap.replace(option.getType(), option);
+                this.calculatePrice();
             }
         }
     }
 
-
-    protected void reset_main_interface(GridPane grid) {
+    protected void resetMainInterface(GridPane grid) {
         for (Node cell : grid.getChildren()) {
             if (cell instanceof ImageView image) {
                 image.setImage(null);
@@ -160,24 +157,24 @@ public class Controller {
     @FXML
     protected void validate_order() throws SQLException {
         error_label.setText("");
-        Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
-        disconnect_popup.setTitle("Confirmation de commande");
-        disconnect_popup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
-        disconnect_popup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
-        Optional<ButtonType> user_action = disconnect_popup.showAndWait();
-        if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
-            String[] order_ids = this.model.get_order_ids();
+        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnectPopup.setTitle("Confirmation de commande");
+        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
+        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
+        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
+            String[] orderIds = this.model.getOrderIds();
             try {
                 Orders order = new Orders(
-                        order_ids[0],
+                        orderIds[0],
                         InstanceManager.get_instance().get_logged_user(),
-                        this.model.get_database().get_emot_for_id(this.model.emot_id),
+                        this.model.getDatabase().getEmotForId(this.model.emotId),
                         Double.parseDouble(this.total_price.getText()),
-                        this.model.get_database().get_state_for_id(1),
-                        order_ids[1]
+                        this.model.getDatabase().getStateForId(1),
+                        orderIds[1]
                 );
-                this.model.get_database().add_order(order);
-                this.model.get_database().add_orders_options(order.getId(), this.model.options_map);
+                this.model.getDatabase().addOrder(order);
+                this.model.getDatabase().addOrdersOptions(order.getId(), this.model.optionsMap);
             } catch (SQLException err) {
                 error_label.setText(err.getMessage());
             }
@@ -193,7 +190,7 @@ public class Controller {
     // login.fxml methods.
     @FXML
     protected void switch_to_account_creation(ActionEvent evt) {
-        _load_screen(evt, "signin.fxml");
+        loadScreen(evt, "signin.fxml");
     }
 
     @FXML
@@ -202,14 +199,14 @@ public class Controller {
         fields.add(login_email_field);
         fields.add(login_password_field);
         try {
-            if (_check_fields_not_empty(fields)) {
-            _check_email_field(login_email_field);
-            for (Customers customer : this.model.get_database().get_customers()) {
+            if (checkFieldsNotEmpty(fields)) {
+            checkEmailField(login_email_field);
+            for (Customers customer : this.model.getDatabase().getCustomers()) {
                 if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
                     if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
                         System.out.println("Authentication successful !");
                         InstanceManager.get_instance().set_logged_user(customer);
-                        _load_screen(evt, "user-choice.fxml");
+                        loadScreen(evt, "user-choice.fxml");
                         return true;
                     }
                 }
@@ -218,7 +215,7 @@ public class Controller {
         } catch (IllegalArgumentException err) {
             error_label.setText(err.getMessage());
         }
-        error_label.setText("Authentication unsuccessful !");
+        error_label.setText("Mauvais email ou mot de passe renseigné !");
         return false;
     }
 
@@ -239,7 +236,7 @@ public class Controller {
     // sign.fxml methods.
     @FXML
     protected void switch_to_account_login(ActionEvent evt) {
-        _load_screen(evt, "login.fxml");
+        loadScreen(evt, "login.fxml");
     }
 
     @FXML
@@ -249,17 +246,17 @@ public class Controller {
         fields.add(signin_1st_password_field);
         fields.add(signin_2nd_password_field);
         try {
-            if (_check_fields_not_empty(fields)) {
+            if (checkFieldsNotEmpty(fields)) {
                 if (Objects.equals(signin_1st_password_field.getText(), signin_2nd_password_field.getText())) {
                     Customers customer = new Customers(
-                        this.model.get_customer_id(signin_email_field.getText()),
+                        this.model.getCustomerId(signin_email_field.getText()),
                         signin_firstname_field.getText(),
                         signin_lastname_field.getText(),
                         signin_email_field.getText(),
                         signin_1st_password_field.getText(),
                         signin_delivery_address_field.getText()
                     );
-                    this.model.get_database().add_customer(customer);
+                    this.model.getDatabase().addCustomer(customer);
                 }
             }
         } catch (IllegalArgumentException err) {error_label.setText(err.getMessage());}
@@ -267,46 +264,46 @@ public class Controller {
 
     @FXML
     protected void disconnect(ActionEvent evt) {
-        Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
-        disconnect_popup.setTitle("Confirmation de Déconnexion");
-        disconnect_popup.setHeaderText("Êtes-vous sûr de vouloir vous déconnecter ?");
-        disconnect_popup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
-        Optional<ButtonType> user_action = disconnect_popup.showAndWait();
-        if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
-            _load_screen(evt, "login.fxml");
+        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnectPopup.setTitle("Confirmation de Déconnexion");
+        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir vous déconnecter ?");
+        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
+        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
+            loadScreen(evt, "login.fxml");
         }
     }
 
     // user-choice methods.
     @FXML
     protected void display_main(ActionEvent evt) {
-        _load_screen(evt, "main.fxml");
+        loadScreen(evt, "main.fxml");
     }
 
     @FXML
     protected void display_orders(ActionEvent evt) {
-        _load_screen(evt, "orders-tracking.fxml");
+        loadScreen(evt, "orders-tracking.fxml");
     }
 
     @FXML
     protected void export_orders(ActionEvent evt) {
         try {
-            List<Orders> orders = this.model.get_database().get_orders_to_export();
-            List<Orders_Options> orders_options;
-            File export_orders = new File(this.model.resources_path+"/orders.txt");
-            FileWriter writer = new FileWriter(export_orders, false);
+            List<Orders> orders = this.model.getDatabase().getOrdersToExport();
+            List<Orders_Options> ordersOptions;
+            File exportOrders = new File(this.model.resourcesPath +"/orders.txt");
+            FileWriter writer = new FileWriter(exportOrders, false);
             for (Orders order : orders) {
-                orders_options = (this.model.get_database().get_orders_options(order.getId()));
+                ordersOptions = (this.model.getDatabase().getOrdersOptions(order.getId()));
                 StringBuilder line = new StringBuilder();
-                for (Orders_Options order_option : orders_options) {
-                    if (Objects.equals(order_option, orders_options.getFirst())) {
-                        line.append(order_option.getOrder_id());
+                for (Orders_Options orderOption : ordersOptions) {
+                    if (Objects.equals(orderOption, ordersOptions.getFirst())) {
+                        line.append(orderOption.getOrder_id());
                     }
-                    line.append(order_option.getOption_id());
+                    line.append(orderOption.getOption_id());
                 }
-                if (export_orders.exists()) {
+                if (exportOrders.exists()) {
                     writer.write(line+"\n");
-                    this.model.get_database().update_order(order.getId(), 2);
+                    this.model.getDatabase().updateOrder(order.getId(), 2);
                 }
             }
             writer.close();
@@ -320,12 +317,12 @@ public class Controller {
     @FXML
     protected void import_orders_advancement() {
         try {
-            File import_orders = new File(this.model.resources_path+"/advancement.txt");
-            Scanner scanner = new Scanner(import_orders);
+            File importOrders = new File(this.model.resourcesPath +"/advancement.txt");
+            Scanner scanner = new Scanner(importOrders);
             while (scanner.hasNextLine()) {
                 String[] line = scanner.nextLine().split(";");
                 try {
-                    this.model.get_database().update_order(line[0], Integer.parseInt(line[1]));
+                    this.model.getDatabase().updateOrder(line[0], Integer.parseInt(line[1]));
                 } catch (SQLException err) {
                     error_label.setText(err.getMessage());
                 }
@@ -355,24 +352,24 @@ public class Controller {
     // orders-tracking methods.
     @FXML
     protected void back_to_menu(ActionEvent evt) {
-        _load_screen(evt, "user-choice.fxml");
+        loadScreen(evt, "user-choice.fxml");
     }
 
     @FXML
-    private void _set_table_view() throws SQLException {
+    private void setTableView() throws SQLException {
         id_column.setCellValueFactory(new PropertyValueFactory<>("id"));
         customer_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCustomerName()));
         emot_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmotName()));
         price_column.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getState()));
         tracking_number_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTracking_number()));
-        ObservableList<Orders> orders_list = FXCollections.observableArrayList(this.model.get_database().get_orders());
-        System.out.println(orders_list);
-        if (!orders_list.isEmpty()) {this.orders_table.setItems(orders_list);}
+        ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders());
+        System.out.println(ordersList);
+        if (!ordersList.isEmpty()) {this.orders_table.setItems(ordersList);}
     }
 
     // load new screen method.
-    private void _load_screen(ActionEvent evt, String name) {
+    private void loadScreen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
             InstanceManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
@@ -392,7 +389,7 @@ public class Controller {
     }
 
     // validations.
-    private boolean _check_fields_not_empty(List<TextField> fields) {
+    private boolean checkFieldsNotEmpty(List<TextField> fields) {
         for (TextField field : fields) {
             if (field.getText().isEmpty()) {
                 throw new IllegalArgumentException("Un des champs obligatoire n'est pas renseigné");
@@ -401,7 +398,7 @@ public class Controller {
         return true;
     }
 
-    private void _check_email_field(TextField email) {
+    private void checkEmailField(TextField email) {
         if (!email.getText().contains("@") && (!email.getText().endsWith(".com") || !email.getText().endsWith(".fr"))) {
             throw new IllegalArgumentException("Le champ email doit contenir un '@' et se terminer par '.com' ou '.fr'");
         }

@@ -77,14 +77,14 @@
                                         <RowConstraints prefHeight="75.0" />
                                     </rowConstraints>
                                     <children>
-                                        <ImageView fx:id="color_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                                        <ImageView fx:id="color_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                                        <ImageView fx:id="color_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                                        <ImageView fx:id="color_3" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                                        <ImageView fx:id="color_4" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <ImageView fx:id="color_5" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                        <ImageView fx:id="color_6" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                                        <ImageView fx:id="color_7" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <ImageView fx:id="color_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
+                                        <ImageView fx:id="color_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                                        <ImageView fx:id="color_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                        <ImageView fx:id="color_3" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                                        <ImageView fx:id="color_4" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <ImageView fx:id="color_5" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <ImageView fx:id="color_6" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                                        <ImageView fx:id="color_7" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                         <ImageView fx:id="color_8" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
@@ -104,10 +104,10 @@
                                         <RowConstraints prefHeight="75.0" />
                                     </rowConstraints>
                                     <children>
-                                        <ImageView fx:id="frame_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                                        <ImageView fx:id="frame_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                                        <ImageView fx:id="frame_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                                        <ImageView fx:id="frame_3" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                                        <ImageView fx:id="frame_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
+                                        <ImageView fx:id="frame_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                                        <ImageView fx:id="frame_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                        <ImageView fx:id="frame_3" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
                                         <ImageView fx:id="frame_4" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                         <ImageView fx:id="frame_5" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                     </children>
@@ -127,9 +127,9 @@
                                         <RowConstraints prefHeight="75.0" />
                                     </rowConstraints>
                                     <children>
-                                        <ImageView fx:id="battery_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                                        <ImageView fx:id="battery_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                                        <ImageView fx:id="battery_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                        <ImageView fx:id="battery_0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
+                                        <ImageView fx:id="battery_1" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                                        <ImageView fx:id="battery_2" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#update_main_interface" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
                                     </children>
                                 </GridPane>
                             </children>

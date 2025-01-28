@@ -11,22 +11,22 @@ import java.util.Objects;
 
 public class BaseModel {
     private final Database database;
-    public int emot_id;
-    public HashMap<String, Options> options_map = new HashMap<>();
-    public String resources_path;
+    public int emotId;
+    public HashMap<String, Options> optionsMap = new HashMap<>();
+    public String resourcesPath;
 
     public BaseModel() {
         this.database = InstanceManager.get_instance().get_database();
-        this.emot_id = 1;
-        this.resources_path = "C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
+        this.emotId = 1;
+        this.resourcesPath = "C:/Users/Soran/IdeaProjects/Online/src/main/resources/online/mvc/";
     }
 
-    public Database get_database() {
+    public Database getDatabase() {
         return database;
     }
 
-    public String get_customer_id(String email) throws SQLException {
-        List<Customers> customers = this.database.get_customers();
+    public String getCustomerId(String email) throws SQLException {
+        List<Customers> customers = this.database.getCustomers();
         for (Customers customer : customers) {
             if (Objects.equals(customer.getEmail(), email)) {
                 throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
@@ -39,8 +39,8 @@ public class BaseModel {
         throw new SQLDataException("Aucune données dans la table 'Customers'");
     }
 
-    public String[] get_order_ids() throws SQLException {
-        List<Orders> orders = this.database.get_orders();
+    public String[] getOrderIds() throws SQLException {
+        List<Orders> orders = this.database.getOrders();
         if (!orders.isEmpty()) {
             int id = Integer.parseInt(orders.getLast().getId().replace("CMD", ""));
             return new String[]{"CMD"+id+1, "TRK"+id+1};
