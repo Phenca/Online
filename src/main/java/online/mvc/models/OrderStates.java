@@ -9,19 +9,19 @@ public class OrderStates {
         this.name = name;
     }
 
-    public int get_id() {
+    public int getId() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String get_name() {
+    public String getName() {
         return name;
     }
 
-    public void set_name(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

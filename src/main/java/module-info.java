@@ -1,4 +1,5 @@
 module online.mvc {
+    requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -8,5 +9,6 @@ module online.mvc {
     requires java.sql;
 
     opens online.mvc to javafx.fxml;
+    opens online.mvc.models to javafx.base;
     exports online.mvc;
 }

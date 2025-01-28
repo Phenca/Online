@@ -1,5 +1,6 @@
 package online.mvc;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,21 +84,21 @@ public class Controller {
     protected void populate_interface(int emot_id, GridPane grid, String option_type) throws SQLException {
         this.reset_main_interface(grid);
         List<Options> options = this.model.get_database().get_emot_options(emot_id, option_type);
-        this.emot_price.setText(String.valueOf(options.getFirst().get_emot_ref().get_price()));
-        this.total_price.setText(String.valueOf(options.getFirst().get_emot_ref().get_price()));
+        this.emot_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
+        this.total_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
         int i=0;
         String image_name;
         for (Options option : options) {
-            if (option.get_price() == 0) {
+            if (option.getPrice() == 0) {
                 this.model.options_map.put(option_type, option);
             }
             if (grid.getChildren().get(i) instanceof ImageView image) {
                 if (option_type.equals("color")){
-                    image_name = option.get_type()+"-"+option.get_name()+".jpg";
+                    image_name = option.getType()+"-"+option.getName()+".jpg";
                 } else {
-                    image_name = option.get_emot_ref().get_id()+"-"+option.get_type()+"-"+option.get_name()+".jpg";
+                    image_name = option.getEmot_ref().getId()+"-"+option.getType()+"-"+option.getName()+".jpg";
                 }
-                image.setImage(new Image(this.model.resources_path+option.get_type()+"/"+image_name));
+                image.setImage(new Image(this.model.resources_path+option.getType()+"/"+image_name));
                 i++;
             }
         }
@@ -105,7 +106,7 @@ public class Controller {
     protected void calculate_price() {
         double price = 0;
         for (Options option : this.model.options_map.values()) {
-            price += option.get_price();
+            price += option.getPrice();
         }
         this.options_price.setText(String.valueOf(price));
         this.calculate_total();
@@ -129,7 +130,7 @@ public class Controller {
                 options.addFirst(String.valueOf(this.model.emot_id));
                 Options option = this.model.get_database().get_emot_option(Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
                 System.out.println(option);
-                this.model.options_map.replace(option.get_type(), option);
+                this.model.options_map.replace(option.getType(), option);
                 this.calculate_price();
             }
         }
@@ -166,7 +167,7 @@ public class Controller {
                     tracking_number
             );
             this.model.get_database().add_order(order);
-            this.model.get_database().add_orders_options(order.get_id(), this.model.options_map);
+            this.model.get_database().add_orders_options(order.getId(), this.model.options_map);
         }
     }
 
@@ -191,8 +192,8 @@ public class Controller {
             try {
                 _check_email_field(login_email_field);
                 for (Customers customer : this.model.get_database().get_customers()) {
-                    if (Objects.equals(customer.get_email(), login_email_field.getText())) {
-                        if (Objects.equals(customer.get_password(), login_password_field.getText())) {
+                    if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
+                        if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
                             System.out.println("Authentication successful !");
                             InstanceManager.get_instance().set_logged_user(customer);
                             _load_screen(evt, "user-choice.fxml");
@@ -278,7 +279,7 @@ public class Controller {
         List<Orders> orders = this.model.get_database().get_orders_to_export(1);
         System.out.println(orders);
         for (Orders order : orders) {
-            List<Orders_Options> orders_options = this.model.get_database().get_orders_options(order.get_id());
+            List<Orders_Options> orders_options = this.model.get_database().get_orders_options(order.getId());
             System.out.println(orders_options);
             // Ici, écriture dans le fichiers orders.txt
         }
@@ -290,17 +291,17 @@ public class Controller {
     @FXML
     private TableView<Orders> orders_table;
     @FXML
-    private TableColumn<Orders, String> id_column = new TableColumn<>("id");
+    private TableColumn<Orders, String> id_column;
     @FXML
-    private TableColumn<Orders, Customers> customer_ref_column = new TableColumn<>("customers_ref");
+    private TableColumn<Orders, String> customer_ref_column;
     @FXML
-    private TableColumn<Orders, EMOT> emot_ref_column = new TableColumn<>("emot_ref");
+    private TableColumn<Orders, String> emot_ref_column;
     @FXML
-    private TableColumn<Orders, Double> price_column = new TableColumn<>("total_price");
+    private TableColumn<Orders, String> price_column;
     @FXML
-    private TableColumn<Orders, OrderStates> state_column = new TableColumn<>("state");
+    private TableColumn<Orders, String> state_column;
     @FXML
-    private TableColumn<Orders, String> tracking_number_column = new TableColumn<>("tracking_number");
+    private TableColumn<Orders, String> tracking_number_column;
 
 
     // orders-tracking methods.
@@ -309,13 +310,14 @@ public class Controller {
         _load_screen(evt, "user-choice.fxml");
     }
 
+    @FXML
     private void _set_table_view() throws SQLException {
-        id_column.setCellValueFactory(new PropertyValueFactory<>("id"));
-        customer_ref_column.setCellValueFactory(new PropertyValueFactory<>("customers_ref"));
-        emot_ref_column.setCellValueFactory(new PropertyValueFactory<>("emot_ref"));
-        price_column.setCellValueFactory(new PropertyValueFactory<>("total_price"));
-        state_column.setCellValueFactory(new PropertyValueFactory<>("state"));
-        tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("tracking_number"));
+        id_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getId()));
+        customer_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCustomerName()));
+        emot_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmotName()));
+        price_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTotalPrice()));
+        state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getState()));
+        tracking_number_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTracking_number()));
         ObservableList<Orders> orders_list = FXCollections.observableArrayList(this.model.get_database().get_orders());
         System.out.println(orders_list);
         this.orders_table.setItems(orders_list);
@@ -342,7 +344,6 @@ public class Controller {
     }
 
     // validations.
-
     private boolean _check_fields_not_empty(List<TextField> fields) {
         for (TextField field : fields) {
             if (field.getText().isEmpty()) {

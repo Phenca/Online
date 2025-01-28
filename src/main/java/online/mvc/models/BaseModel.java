@@ -29,11 +29,11 @@ public class BaseModel {
 //        List<Customers> customers = this.database.get_customers();
         List<Customers> customers = this.database.get_customers();
         for (Customers customer : customers) {
-            if (Objects.equals(customer.get_email(), email)) {
+            if (Objects.equals(customer.getEmail(), email)) {
                 throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
             }
             if (Objects.equals(customers.getLast(), customer)) {
-                int id = Integer.parseInt(customer.get_id().replace("CUS", ""));
+                int id = Integer.parseInt(customer.getId().replace("CUS", ""));
                 return "CUS" + id + 1;
             }
         }
@@ -43,7 +43,7 @@ public class BaseModel {
     public String get_order_id() throws SQLException {
         List<Orders> orders = this.database.get_orders();
         if (!orders.isEmpty()) {
-            int id = Integer.parseInt(orders.getLast().get_id().replace("CMD", ""));
+            int id = Integer.parseInt(orders.getLast().getId().replace("CMD", ""));
             return "CMD" + id + 1;
         }
         throw new SQLDataException("Aucune données dans la table 'Orders'");

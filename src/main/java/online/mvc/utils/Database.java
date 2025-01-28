@@ -85,12 +85,12 @@ public class Database {
         String sql = "INSERT INTO customers (id, firstname, lastname, email, delivery_address) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
         try {
-            prepared_statement.setString(1, data.get_id());
-            prepared_statement.setString(2, data.get_firstname());
-            prepared_statement.setString(3, data.get_lastname());
-            prepared_statement.setString(4, data.get_email());
-            prepared_statement.setString(5, data.get_password());
-            prepared_statement.setString(6, data.get_delivery_address());
+            prepared_statement.setString(1, data.getId());
+            prepared_statement.setString(2, data.getFirstname());
+            prepared_statement.setString(3, data.getLastname());
+            prepared_statement.setString(4, data.getEmail());
+            prepared_statement.setString(5, data.getPassword());
+            prepared_statement.setString(6, data.getDelivery_address());
             prepared_statement.executeUpdate();
         } catch (Exception err) {
         System.err.println(err.getMessage());
@@ -151,12 +151,12 @@ public class Database {
         String sql = "INSERT INTO orders (id, client_ref, emot_ref, total_price, state, tracking_number) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement prepared_statement = connection.prepareStatement(sql);
         try {
-            prepared_statement.setString(1, order.get_id());
-            prepared_statement.setString(2, order.get_customers_ref().get_id());
-            prepared_statement.setInt(3, order.get_emot_ref().get_id());
-            prepared_statement.setDouble(4, order.get_total_price());
-            prepared_statement.setInt(5, order.get_state().get_id());
-            prepared_statement.setString(6, order.get_tracking_number());
+            prepared_statement.setString(1, order.getId());
+            prepared_statement.setString(2, order.getCustomers_ref().getId());
+            prepared_statement.setInt(3, order.getEmot_ref().getId());
+            prepared_statement.setDouble(4, order.getTotal_price());
+            prepared_statement.setInt(5, order.getStateId().getId());
+            prepared_statement.setString(6, order.getTracking_number());
             prepared_statement.executeUpdate();
         } catch (Exception err) {
             System.err.println(err.getMessage());
@@ -169,7 +169,7 @@ public class Database {
             PreparedStatement prepared_statement = connection.prepareStatement(sql);
             try {
                 prepared_statement.setString(1, order_id);
-                prepared_statement.setString(2, option.get_id());
+                prepared_statement.setString(2, option.getId());
                 prepared_statement.executeUpdate();
             } catch (Exception err) {
                 System.err.println(err.getMessage());

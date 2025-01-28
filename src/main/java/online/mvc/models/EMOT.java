@@ -11,27 +11,27 @@ public class EMOT {
         this.price = price;
     }
 
-    public int get_id() {
+    public int getId() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String get_name() {
+    public String getName() {
         return name;
     }
 
-    public void set_name(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public double get_price() {
+    public double getPrice() {
         return price;
     }
 
-    public void set_price(double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -15,44 +15,48 @@ public class Options {
         this.emot_ref = emot_ref;
     }
 
-    public String get_id() {
+    public String getId() {
         return id;
     }
 
-    public void set_id(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String get_name() {
+    public String getName() {
         return name;
     }
 
-    public void set_name(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String get_type() {
+    public String getType() {
         return type;
     }
 
-    public void set_type(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public double get_price() {
+    public double getPrice() {
         return price;
     }
 
-    public void set_price(double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public EMOT get_emot_ref() {
+    public EMOT getEmot_ref() {
         return emot_ref;
     }
 
-    public void set_emot_ref(EMOT emot_ref) {
+    public void setEmot_ref(EMOT emot_ref) {
         this.emot_ref = emot_ref;
+    }
+
+    public String getOptionsName() {
+        return getName();
     }
 
     @Override

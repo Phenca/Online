@@ -17,51 +17,51 @@ public class Customers {
         this.delivery_address = delivery_address;
     }
 
-    public String get_id() {
+    public String getId() {
         return id;
     }
 
-    public void set_id(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String get_firstname() {
+    public String getFirstname() {
         return firstname;
     }
 
-    public void set_firstname(String firstname) {
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public String get_lastname() {
+    public String getLastname() {
         return lastname;
     }
 
-    public void set_lastname(String lastname) {
+    public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public String get_email() {
+    public String getEmail() {
         return email;
     }
 
-    public void set_email(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String get_password() {
+    public String getPassword() {
         return password;
     }
 
-    public void set_password(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String get_delivery_address() {
+    public String getDelivery_address() {
         return delivery_address;
     }
 
-    public void set_delivery_address(String delivery_address) {
+    public void setDelivery_address(String delivery_address) {
         this.delivery_address = delivery_address;
     }
 
