@@ -1,5 +1,6 @@
 package online.mvc;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +37,9 @@ public class Controller {
             this._set_table_view();
         }
     }
+
+    @FXML
+    private Label error_label;
 
     // main.fxml fields.
     @FXML
@@ -83,7 +87,7 @@ public class Controller {
 
     protected void populate_interface(int emot_id, GridPane grid, String option_type) throws SQLException {
         this.reset_main_interface(grid);
-        List<Options> options = this.model.get_database().get_emot_options(emot_id, option_type);
+        List<Options> options = this.model.get_database().get_emot_options_for_type(emot_id, option_type);
         this.emot_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
         this.total_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
         int i=0;
@@ -128,7 +132,7 @@ public class Controller {
                     this.main_frame.setImage(new Image(this.model.resources_path + "img/" + this.model.emot_id + "-" + file_name));
                 } else {options.removeFirst();}
                 options.addFirst(String.valueOf(this.model.emot_id));
-                Options option = this.model.get_database().get_emot_option(Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
+                Options option = this.model.get_database().get_option_for_parameters(null, Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
                 System.out.println(option);
                 this.model.options_map.replace(option.getType(), option);
                 this.calculate_price();
@@ -151,6 +155,7 @@ public class Controller {
 
     @FXML
     protected void validate_order() throws SQLException {
+        error_label.setText("");
         Alert disconnect_popup = new Alert(Alert.AlertType.CONFIRMATION);
         disconnect_popup.setTitle("Confirmation de commande");
         disconnect_popup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
@@ -158,16 +163,20 @@ public class Controller {
         Optional<ButtonType> user_action = disconnect_popup.showAndWait();
         if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
             String tracking_number = this.model.get_order_id();
-            Orders order = new Orders(
-                    tracking_number,
-                    InstanceManager.get_instance().get_logged_user(),
-                    this.model.get_database().get_emot_for_id(this.model.emot_id),
-                    Double.parseDouble(this.total_price.getText()),
-                    this.model.get_database().get_state_for_id(1),
-                    tracking_number
-            );
-            this.model.get_database().add_order(order);
-            this.model.get_database().add_orders_options(order.getId(), this.model.options_map);
+            try {
+                Orders order = new Orders(
+                        tracking_number,
+                        InstanceManager.get_instance().get_logged_user(),
+                        this.model.get_database().get_emot_for_id(this.model.emot_id),
+                        Double.parseDouble(this.total_price.getText()),
+                        this.model.get_database().get_state_for_id(1),
+                        tracking_number
+                );
+                this.model.get_database().add_order(order);
+                this.model.get_database().add_orders_options(order.getId(), this.model.options_map);
+            } catch (SQLException err) {
+                error_label.setText(err.getMessage());
+            }
         }
     }
 
@@ -188,24 +197,25 @@ public class Controller {
         ArrayList<TextField> fields = new ArrayList<>();
         fields.add(login_email_field);
         fields.add(login_password_field);
-        if (_check_fields_not_empty(fields)) {
-            try {
-                _check_email_field(login_email_field);
-                for (Customers customer : this.model.get_database().get_customers()) {
-                    if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
-                        if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
-                            System.out.println("Authentication successful !");
-                            InstanceManager.get_instance().set_logged_user(customer);
-                            _load_screen(evt, "user-choice.fxml");
-                            return true;
-                        }
+        try {
+            if (_check_fields_not_empty(fields)) {
+            _check_email_field(login_email_field);
+            for (Customers customer : this.model.get_database().get_customers()) {
+                if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
+                    if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
+                        System.out.println("Authentication successful !");
+                        InstanceManager.get_instance().set_logged_user(customer);
+                        _load_screen(evt, "user-choice.fxml");
+                        return true;
                     }
                 }
-            } catch (IllegalArgumentException err) {
-                System.err.println(err.getMessage());
             }
+            }
+        } catch (IllegalArgumentException err) {
+            error_label.setText(err.getMessage());
         }
-        throw new IllegalAccessError("Authentication unsuccessful !");
+        error_label.setText("Authentication unsuccessful !");
+        return false;
     }
 
     // signin.fxml fields.
@@ -248,7 +258,7 @@ public class Controller {
                     this.model.get_database().add_customer(customer);
                 }
             }
-        } catch (IllegalArgumentException err) {System.err.println(err.getMessage());}
+        } catch (IllegalArgumentException err) {error_label.setText(err.getMessage());}
     }
 
     @FXML
@@ -276,7 +286,7 @@ public class Controller {
 
     @FXML
     protected void export_orders(ActionEvent evt) throws SQLException {
-        List<Orders> orders = this.model.get_database().get_orders_to_export(1);
+        List<Orders> orders = this.model.get_database().get_orders_to_export();
         System.out.println(orders);
         for (Orders order : orders) {
             List<Orders_Options> orders_options = this.model.get_database().get_orders_options(order.getId());
@@ -284,7 +294,7 @@ public class Controller {
             // Ici, écriture dans le fichiers orders.txt
         }
 
-        System.out.println("Méthode pour exporter les commandes avec le statut 'created'");
+        error_label.setText("Méthode pour exporter les commandes avec le statut 'created'");
     }
 
     // orders-tracking fields.
@@ -297,7 +307,7 @@ public class Controller {
     @FXML
     private TableColumn<Orders, String> emot_ref_column;
     @FXML
-    private TableColumn<Orders, String> price_column;
+    private TableColumn<Orders, Double> price_column;
     @FXML
     private TableColumn<Orders, String> state_column;
     @FXML
@@ -312,15 +322,15 @@ public class Controller {
 
     @FXML
     private void _set_table_view() throws SQLException {
-        id_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getId()));
+        id_column.setCellValueFactory(new PropertyValueFactory<>("id"));
         customer_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCustomerName()));
         emot_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmotName()));
-        price_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTotalPrice()));
+        price_column.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getState()));
         tracking_number_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTracking_number()));
         ObservableList<Orders> orders_list = FXCollections.observableArrayList(this.model.get_database().get_orders());
         System.out.println(orders_list);
-        this.orders_table.setItems(orders_list);
+        if (!orders_list.isEmpty()) {this.orders_table.setItems(orders_list);}
     }
 
     // load new screen method.

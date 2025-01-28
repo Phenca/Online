@@ -41,11 +41,11 @@ public class Orders {
         this.emot_ref = emot_ref;
     }
 
-    public double getTotal_price() {
+    public double getTotalPrice() {
         return total_price;
     }
 
-    public void setTotal_price(double total_price) {
+    public void setTotalPrice(double total_price) {
         this.total_price = total_price;
     }
 
@@ -71,10 +71,6 @@ public class Orders {
 
     public String getEmotName() {
         return emot_ref.getName();
-    }
-
-    public String getTotalPrice() {
-        return String.valueOf(getTotal_price());
     }
 
     public String getState() {

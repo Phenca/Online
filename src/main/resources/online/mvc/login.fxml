@@ -43,6 +43,11 @@
                   <Button mnemonicParsing="false" onAction="#log_to_account" text="Se connecter" />
                </children>
             </HBox>
+            <Label fx:id="error_label" textFill="RED">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
    </children>

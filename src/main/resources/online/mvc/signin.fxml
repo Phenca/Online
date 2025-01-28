@@ -24,7 +24,7 @@
             </Label>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Prénom :" />
+                  <Label text="Prénom* :" />
                   <TextField fx:id="signin_firstname_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -33,7 +33,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Nom :" />
+                  <Label text="Nom* :" />
                   <TextField fx:id="signin_lastname_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -42,7 +42,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Adresse de livraison :" />
+                  <Label text="Adresse de livraison* :" />
                   <TextField fx:id="signin_delivery_address_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -51,7 +51,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Email :" />
+                  <Label text="Email* :" />
                   <TextField fx:id="signin_email_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -60,7 +60,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Mot de passe :" />
+                  <Label text="Mot de passe* :" />
                   <PasswordField fx:id="signin_1st_password_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -69,7 +69,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="5.0">
                <children>
-                  <Label text="Confirmer votre mot de passe :" />
+                  <Label text="Confirmer votre mot de passe* :" />
                   <PasswordField fx:id="signin_2nd_password_field" prefHeight="31.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
@@ -85,6 +85,11 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
+            <Label fx:id="error_label">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="-10.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </children>

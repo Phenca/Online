@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="650.0" prefWidth="1214.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
+<AnchorPane prefHeight="650.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
     <children>
-        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="610.0" prefWidth="1170.0" spacing="20.0">
+        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="610.0" prefWidth="1080.0" spacing="20.0">
             <children>
                 <Label text="Commande d'un moyen de transport électrique" />
                 <HBox alignment="CENTER" spacing="20.0">
@@ -23,19 +24,43 @@
                         <Button fx:id="emot_scooter" mnemonicParsing="false" onAction="#set_emot" text="Trottinette" />
                     </children>
                 </HBox>
-                <ImageView fx:id="main_frame" fitHeight="400.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
-                <HBox alignment="CENTER" spacing="15.0">
-                    <children>
-                        <Label text="Prix du MDTE :" />
-                        <Text fx:id="emot_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-                        <Label text="Prix des options :" />
-                        <Text fx:id="options_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-                        <Label text="Prix total :" />
-                        <Text fx:id="total_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-                        <Button mnemonicParsing="false" onAction="#validate_order" text="Valider" />
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER" spacing="20.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                      <ImageView fx:id="main_frame" fitHeight="400.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER" prefHeight="300.0" prefWidth="300.0">
+                     <children>
+                        <HBox alignment="CENTER" maxWidth="300.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                                    <Label text="Prix du MDTE :" />
+                                    <Text fx:id="emot_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                              <Text fx:id="emot_price1" strokeType="OUTSIDE" strokeWidth="0.0" text="€" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxWidth="300.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                                    <Label text="Prix des options :" />
+                                    <Text fx:id="options_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                              <Text fx:id="emot_price11" strokeType="OUTSIDE" strokeWidth="0.0" text="€" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxWidth="300.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                                    <Label text="Prix total :" />
+                                    <Text fx:id="total_price" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                              <Text fx:id="emot_price12" strokeType="OUTSIDE" strokeWidth="0.0" text="€" />
+                           </children>
+                        </HBox>
+                              <Button mnemonicParsing="false" onAction="#validate_order" text="Valider" />
+                        <Label fx:id="error_label">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER" prefWidth="1080.0" spacing="20.0">
                     <children>
                         <VBox alignment="CENTER" spacing="10.0">
                             <children>
@@ -113,6 +138,7 @@
                 </HBox>
             </children>
         </VBox>
-        <Button layoutX="1080.0" layoutY="10.0" mnemonicParsing="false" onAction="#disconnect" text="Se déconnecter" />
+        <Button layoutX="1000.0" mnemonicParsing="false" onAction="#disconnect" text="Se déconnecter" AnchorPane.bottomAnchor="757.0" AnchorPane.leftAnchor="977.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button mnemonicParsing="false" onAction="#back_to_menu" text="Retour au menu" AnchorPane.bottomAnchor="757.0" AnchorPane.rightAnchor="973.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>

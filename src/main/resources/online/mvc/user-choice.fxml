@@ -23,6 +23,11 @@
                 <Button mnemonicParsing="false" onAction="#display_main" prefHeight="50.0" prefWidth="250.0" text="Faire une nouvelle commande" />
                 <Button mnemonicParsing="false" onAction="#display_orders" prefHeight="50.0" prefWidth="250.0" text="Suivre mes commandes" />
             <Button mnemonicParsing="false" onAction="#export_orders" prefHeight="50.0" prefWidth="250.0" text="Exporter les commandes en cours" />
+            <Label fx:id="error_label">
+               <VBox.margin>
+                  <Insets bottom="-10.0" top="-10.0" />
+               </VBox.margin>
+            </Label>
             </children>
         </VBox>
     </children>
