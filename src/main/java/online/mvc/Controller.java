@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import online.mvc.models.*;
 import online.mvc.utils.InstanceManager;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
@@ -285,16 +288,29 @@ public class Controller {
     }
 
     @FXML
-    protected void export_orders(ActionEvent evt) throws SQLException {
-        List<Orders> orders = this.model.get_database().get_orders_to_export();
-        System.out.println(orders);
-        for (Orders order : orders) {
-            List<Orders_Options> orders_options = this.model.get_database().get_orders_options(order.getId());
-            System.out.println(orders_options);
-            // Ici, écriture dans le fichiers orders.txt
+    protected void export_orders(ActionEvent evt) {
+        try {
+            List<Orders> orders = this.model.get_database().get_orders_to_export();
+            List<Orders_Options> orders_options;
+            File export_orders = new File(this.model.resources_path+"/orders.txt");
+            FileWriter writer = new FileWriter(export_orders, false);
+            for (Orders order : orders) {
+                orders_options = (this.model.get_database().get_orders_options(order.getId()));
+                StringBuilder line = new StringBuilder();
+                for (Orders_Options order_option : orders_options) {
+                    if (Objects.equals(order_option, orders_options.getFirst())) {
+                        line.append(order_option.getOrder_id());
+                    }
+                    line.append(order_option.getOption_id());
+                }
+                if (export_orders.exists()) {writer.write(line+"\n");writer.write(line+"\n");}
+            }
+            writer.close();
+        } catch (SQLException err) {
+            error_label.setText(err.getMessage());
+        } catch (IOException err) {
+            error_label.setText(err.getMessage());
         }
-
-        error_label.setText("Méthode pour exporter les commandes avec le statut 'created'");
     }
 
     // orders-tracking fields.

@@ -77,9 +77,8 @@ public class Orders {
         return state_id.getName();
     }
 
-
     @Override
     public String toString() {
-        return id + ";" + customers_ref + ";" + emot_ref  + ";" + total_price + ";" + state_id + ";" + tracking_number;
+        return id + ";" + customers_ref + ";" + emot_ref  + ";" + total_price + ";" + state_id + ";" + tracking_number + ";";
     }
 }

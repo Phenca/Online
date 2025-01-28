@@ -27,6 +27,6 @@ public class Orders_Options {
 
     @Override
     public String toString() {
-        return order_id + ";" + option_id;
+        return order_id + ";" + option_id.getType() + ";" + option_id.getName();
     }
 }

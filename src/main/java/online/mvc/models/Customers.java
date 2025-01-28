@@ -67,6 +67,6 @@ public class Customers {
 
     @Override
     public String toString() {
-        return id + ";" + firstname + ";" + lastname + ";" + email + ";" + delivery_address;
+        return id;
     }
 }

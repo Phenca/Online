@@ -61,6 +61,6 @@ public class Options {
 
     @Override
     public String toString() {
-        return id + ";" + name + ";" + type + ";" + price + ";" + emot_ref;
+        return id + ";";
     }
 }

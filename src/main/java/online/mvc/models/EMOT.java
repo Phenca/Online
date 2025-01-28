@@ -37,6 +37,6 @@ public class EMOT {
 
     @Override
     public String toString() {
-        return id + ";" + name + ";" + price;
+        return String.valueOf(id);
     }
 }

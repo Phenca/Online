@@ -27,6 +27,6 @@ public class OrderStates {
 
     @Override
     public String toString() {
-        return id + ";" + name;
+        return String.valueOf(id);
     }
 }
