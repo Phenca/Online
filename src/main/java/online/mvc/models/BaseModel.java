@@ -26,7 +26,6 @@ public class BaseModel {
     }
 
     public String get_customer_id(String email) throws SQLException {
-//        List<Customers> customers = this.database.get_customers();
         List<Customers> customers = this.database.get_customers();
         for (Customers customer : customers) {
             if (Objects.equals(customer.getEmail(), email)) {
@@ -40,11 +39,11 @@ public class BaseModel {
         throw new SQLDataException("Aucune données dans la table 'Customers'");
     }
 
-    public String get_order_id() throws SQLException {
+    public String[] get_order_ids() throws SQLException {
         List<Orders> orders = this.database.get_orders();
         if (!orders.isEmpty()) {
             int id = Integer.parseInt(orders.getLast().getId().replace("CMD", ""));
-            return "CMD" + id + 1;
+            return new String[]{"CMD"+id+1, "TRK"+id+1};
         }
         throw new SQLDataException("Aucune données dans la table 'Orders'");
     }

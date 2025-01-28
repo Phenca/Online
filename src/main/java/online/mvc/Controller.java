@@ -166,15 +166,15 @@ public class Controller {
         disconnect_popup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
         Optional<ButtonType> user_action = disconnect_popup.showAndWait();
         if (user_action.isPresent() && user_action.get() == ButtonType.OK) {
-            String tracking_number = this.model.get_order_id();
+            String[] order_ids = this.model.get_order_ids();
             try {
                 Orders order = new Orders(
-                        tracking_number,
+                        order_ids[0],
                         InstanceManager.get_instance().get_logged_user(),
                         this.model.get_database().get_emot_for_id(this.model.emot_id),
                         Double.parseDouble(this.total_price.getText()),
                         this.model.get_database().get_state_for_id(1),
-                        tracking_number
+                        order_ids[1]
                 );
                 this.model.get_database().add_order(order);
                 this.model.get_database().add_orders_options(order.getId(), this.model.options_map);
