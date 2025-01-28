@@ -1,13 +1,13 @@
 package online.mvc.models;
 
 public class Options {
-    private String id;
+    private int id;
     private String name;
     private String type;
     private double price;
     private EMOT emot_ref;
 
-    public Options(String id, String name, String type, double price, EMOT emot_ref) {
+    public Options(int id, String name, String type, double price, EMOT emot_ref) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -15,11 +15,11 @@ public class Options {
         this.emot_ref = emot_ref;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

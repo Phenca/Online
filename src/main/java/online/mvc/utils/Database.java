@@ -190,7 +190,7 @@ public class Database {
             PreparedStatement prepared_statement = connection.prepareStatement(sql);
             try {
                 prepared_statement.setString(1, order_id);
-                prepared_statement.setString(2, option.getId());
+                prepared_statement.setInt(2, option.getId());
                 prepared_statement.executeUpdate();
             } catch (Exception err) {
                 System.err.println(err.getMessage());
@@ -206,7 +206,7 @@ public class Database {
         ResultSet queryset = prepared_statement.executeQuery();
         while (queryset.next()) {
             Orders order_id = this.get_order_for_id(queryset.getString("order_id"));
-            Options option_id = this.get_option_for_parameters(queryset.getString("option_id"), null, null, null);
+            Options option_id = this.get_option_for_parameters(queryset.getInt("option_id"), null, null, null);
             orders_options.add(new Orders_Options(order_id, option_id));
         }
         if (orders_options.isEmpty()) {
@@ -234,7 +234,7 @@ public class Database {
         );
         ResultSet queryset = prepared_statement.executeQuery();
         while (queryset.next()) {
-            String id = queryset.getString("id");
+            int id = queryset.getInt("id");
             String name = queryset.getString("name");
             String type = queryset.getString("type");
             double price = queryset.getDouble("price");
@@ -247,11 +247,11 @@ public class Database {
         return options;
     }
 
-    public Options get_option_for_parameters(String _id, Integer ref, String option_type, String option_name) throws SQLException {
+    public Options get_option_for_parameters(Integer _id, Integer ref, String option_type, String option_name) throws SQLException {
         PreparedStatement prepared_statement;
         if (!Objects.equals(_id, null)) {
             prepared_statement = connection.prepareStatement(
-                "SELECT * FROM options WHERE id='"+_id+"'"
+                "SELECT * FROM options WHERE id="+_id
             );
         } else {
             prepared_statement = connection.prepareStatement(
@@ -260,7 +260,7 @@ public class Database {
         }
         ResultSet queryset = prepared_statement.executeQuery();
         if (queryset.next()) {
-            String id = queryset.getString("id");
+            int id = queryset.getInt("id");
             String name = queryset.getString("name");
             String type = queryset.getString("type");
             double price = queryset.getDouble("price");
