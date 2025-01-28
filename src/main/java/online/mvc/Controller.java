@@ -22,6 +22,7 @@ import online.mvc.models.*;
 import online.mvc.utils.InstanceManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -312,6 +313,24 @@ public class Controller {
         } catch (SQLException err) {
             error_label.setText(err.getMessage());
         } catch (IOException err) {
+            error_label.setText(err.getMessage());
+        }
+    }
+
+    @FXML
+    protected void import_orders_advancement() {
+        try {
+            File import_orders = new File(this.model.resources_path+"/advancement.txt");
+            Scanner scanner = new Scanner(import_orders);
+            while (scanner.hasNextLine()) {
+                String[] line = scanner.nextLine().split(";");
+                try {
+                    this.model.get_database().update_order(line[0], Integer.parseInt(line[1]));
+                } catch (SQLException err) {
+                    error_label.setText(err.getMessage());
+                }
+            }
+        } catch (FileNotFoundException err) {
             error_label.setText(err.getMessage());
         }
     }

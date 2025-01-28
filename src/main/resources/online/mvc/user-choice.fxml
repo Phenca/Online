@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
     <children>
       <Button mnemonicParsing="false" onAction="#disconnect" text="Se déconnecter" />
         <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
@@ -22,7 +22,8 @@
                 </Label>
                 <Button mnemonicParsing="false" onAction="#display_main" prefHeight="50.0" prefWidth="250.0" text="Faire une nouvelle commande" />
                 <Button mnemonicParsing="false" onAction="#display_orders" prefHeight="50.0" prefWidth="250.0" text="Suivre mes commandes" />
-            <Button mnemonicParsing="false" onAction="#export_orders" prefHeight="50.0" prefWidth="250.0" text="Exporter les commandes en cours" />
+            <Button mnemonicParsing="false" onAction="#export_orders" prefHeight="50.0" prefWidth="250.0" text="Exporter les dernières commandes" />
+            <Button mnemonicParsing="false" onAction="#import_orders_advancement" prefHeight="50.0" prefWidth="250.0" text="Importer les commandes" />
             <Label fx:id="error_label">
                <VBox.margin>
                   <Insets bottom="-10.0" top="-10.0" />
