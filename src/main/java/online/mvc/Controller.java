@@ -158,7 +158,7 @@ public class Controller {
     @FXML
     private TableView<Orders> orders_table;
     @FXML
-    private TableColumn<Orders, String> id_column;
+    private TableColumn<Orders, String> id_column = new TableColumn<>("id");
     @FXML
     private TableColumn<Orders, String> customer_ref_column;
     @FXML
@@ -182,11 +182,12 @@ public class Controller {
         customer_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCustomerName()));
         emot_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmotName()));
         price_column.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getState()));
-        tracking_number_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTracking_number()));
+        state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getOrderState()));
+        tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("trackingNumber"));;
         ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders());
-        System.out.println(ordersList);
-        if (!ordersList.isEmpty()) {this.orders_table.setItems(ordersList);}
+        if (!ordersList.isEmpty()) {
+            this.orders_table.setItems(ordersList);
+        }
     }
 
     // main.fxml fields.
@@ -347,7 +348,9 @@ public class Controller {
             AnchorPane view = fxmlloader.load();
             Stage new_stage = InstanceManager.get_instance().get_primary_stage();
             Scene scene = new Scene(view);
-            scene.getStylesheets().add(getClass().getResource("style/styles.css").toExternalForm());
+            if (!Objects.equals(name, "orders-tracking.fxml")){
+                scene.getStylesheets().add(getClass().getResource("style/styles.css").toExternalForm());
+            }
             new_stage.setScene(scene);
             new_stage.show();
             if (Objects.equals(name, "main.fxml")) {

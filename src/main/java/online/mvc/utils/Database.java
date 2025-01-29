@@ -152,7 +152,7 @@ public class Database {
             preparedStatement.setInt(3, order.getEmot_ref().getId());
             preparedStatement.setDouble(4, order.getTotalPrice());
             preparedStatement.setInt(5, order.getStateId().getId());
-            preparedStatement.setString(6, order.getTracking_number());
+            preparedStatement.setString(6, order.getTrackingNumber());
             preparedStatement.executeUpdate();
         } catch (Exception err) {
             System.err.println(err.getMessage());

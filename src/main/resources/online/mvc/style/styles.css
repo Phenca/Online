@@ -69,13 +69,18 @@
     -fx-text-fill: #495057; /* Darker Gray */
 }
 
+.table-cell {
+    -fx-text-fill: black;
+}
+
 .table-row-cell {
     -fx-padding: 8px;
+    -fx-text-fill: black;
 }
 
 .table-row-cell:selected {
     -fx-background-color: #0d6efd; /* Selected Row Background */
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 /* Alert Popups */

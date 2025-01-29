@@ -8,18 +8,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
+<AnchorPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.mvc.Controller">
     <children>
         <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label text="Suivi de vos commandes" />
-                <TableView fx:id="orders_table" prefHeight="300.0" prefWidth="550.0">
+                <TableView fx:id="orders_table" prefHeight="300.0" prefWidth="500.0">
                     <columns>
-                        <TableColumn fx:id="id_column" prefWidth="125.0" text="ID Commande">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="id" />
-                            </cellValueFactory>
-                        </TableColumn>
+                        <TableColumn fx:id="id_column" prefWidth="125.0" text="ID commande" />
                         <TableColumn fx:id="customer_ref_column" prefWidth="100.0" text="Client">
                             <cellValueFactory>
                                 <PropertyValueFactory property="customerName" />

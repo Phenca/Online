@@ -57,11 +57,11 @@ public class Orders {
         this.state_id = state_id;
     }
 
-    public String getTracking_number() {
+    public String getTrackingNumber() {
         return tracking_number;
     }
 
-    public void setTracking_number(String tracking_number) {
+    public void setTrackingNumber(String tracking_number) {
         this.tracking_number = tracking_number;
     }
 
@@ -73,7 +73,7 @@ public class Orders {
         return emot_ref.getName();
     }
 
-    public String getState() {
+    public String getOrderState() {
         return state_id.getName();
     }
 
