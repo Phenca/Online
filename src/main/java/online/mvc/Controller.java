@@ -137,15 +137,14 @@ public class Controller {
 
     @FXML
     protected void display_orders(ActionEvent evt) {
-        System.out.println("DIsplay orders");
         loadScreen(evt, "orders-tracking.fxml");
-        System.out.println("orders displayed");
     }
 
     @FXML
     protected void export_orders(ActionEvent evt) {
         try {
             this.model.writeFile("orders.csv");
+            error_label.setText("Export des nouvelles commandes réalisé avec succès !");
         } catch (SQLException | IOException err) {
             error_label.setText(err.getMessage());
         }
@@ -155,6 +154,7 @@ public class Controller {
     protected void import_orders_advancement() {
         try {
             this.model.readFile("advancement.csv");
+            error_label.setText("Import des avancements de commandes réalisé avec succès !");
         } catch (FileNotFoundException | SQLException err) {
             error_label.setText(err.getMessage());
         } catch (NumberFormatException err) {
@@ -302,7 +302,7 @@ public class Controller {
     }
 
     @FXML
-    protected void validate_order() throws SQLException {
+    protected void validate_order(ActionEvent evt) throws SQLException {
         error_label.setText("");
         Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
         disconnectPopup.setTitle("Confirmation de commande");
@@ -322,6 +322,7 @@ public class Controller {
                 );
                 this.model.getDatabase().addOrder(order);
                 this.model.getDatabase().addOrdersOptions(order.getId(), this.model.optionsMap);
+                loadScreen(evt, "user-choice.fxml");
             } catch (SQLException err) {
                 error_label.setText(err.getMessage());
             }
@@ -356,7 +357,6 @@ public class Controller {
     private void loadScreen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
-            System.out.println(getClass().getResource(name));
             InstanceManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
             AnchorPane view = fxmlloader.load();
             Stage new_stage = InstanceManager.get_instance().get_primary_stage();
