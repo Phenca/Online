@@ -101,7 +101,7 @@ public class Controller {
     }
 
     @FXML
-    protected void create_account() throws SQLException {
+    protected void create_account(ActionEvent evt) throws SQLException {
         ArrayList<TextField> fields = new ArrayList<>();
         fields.add(signin_email_field);
         fields.add(signin_1st_password_field);
@@ -118,6 +118,11 @@ public class Controller {
                             signin_delivery_address_field.getText()
                     );
                     this.model.getDatabase().addCustomer(customer);
+                    Alert popup = new Alert(Alert.AlertType.INFORMATION);
+                    popup.setTitle("Compte utilisateur créé !");
+                    popup.setHeaderText("Votre compte à bien été enregistré !");
+                    popup.showAndWait();
+                    loadScreen(evt, "user-choice.fxml");
                 }
             }
         } catch (IllegalArgumentException err) {error_label.setText(err.getMessage());}
@@ -137,7 +142,7 @@ public class Controller {
     @FXML
     protected void export_orders(ActionEvent evt) {
         try {
-            this.model.writeFile("orders.txt");
+            this.model.writeFile("orders.csv");
         } catch (SQLException | IOException err) {
             error_label.setText(err.getMessage());
         }
@@ -146,7 +151,7 @@ public class Controller {
     @FXML
     protected void import_orders_advancement() {
         try {
-            this.model.readFile("advancement.txt");
+            this.model.readFile("advancement.csv");
         } catch (FileNotFoundException | SQLException err) {
             error_label.setText(err.getMessage());
         } catch (NumberFormatException err) {
@@ -184,7 +189,7 @@ public class Controller {
         price_column.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getOrderState()));
         tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("trackingNumber"));;
-        ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders());
+        ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders(InstanceManager.get_instance().get_logged_user()));
         if (!ordersList.isEmpty()) {
             this.orders_table.setItems(ordersList);
         }

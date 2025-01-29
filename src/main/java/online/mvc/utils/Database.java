@@ -72,7 +72,7 @@ public class Database {
     }
 
     public void addCustomer(Customers data) throws SQLException {
-        String sql = "INSERT INTO customers (id, firstname, lastname, email, delivery_address) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customers (id, firstname, lastname, email, password, delivery_address) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         try {
             preparedStatement.setString(1, data.getId());
@@ -88,9 +88,14 @@ public class Database {
         }
     }
 
-    public List<Orders> getOrders() throws SQLException {
+    public List<Orders> getOrders(Customers loggedUser) throws SQLException {
         List<Orders> orders = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders");
+        PreparedStatement preparedStatement;
+        if (Objects.equals(loggedUser, null)) {
+            preparedStatement = connection.prepareStatement("SELECT * FROM orders");
+        } else {
+            preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE client_ref='"+loggedUser.getId()+"'");
+        }
         ResultSet queryset = preparedStatement.executeQuery();
         while (queryset.next()) {
             String id = queryset.getString("id");

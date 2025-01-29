@@ -37,20 +37,32 @@ public class BaseModel {
                 throw new IllegalArgumentException("Un compte pour l'email '"+email+"' est déjà renseigné.");
             }
             if (Objects.equals(customers.getLast(), customer)) {
-                int id = Integer.parseInt(customer.getId().replace("CUS", ""));
-                return "CUS" + id + 1;
+                return getNewID("CUS", customer.getId());
             }
         }
         throw new SQLDataException("Aucune données dans la table 'Customers'");
     }
 
     public String[] getOrderIds() throws SQLException {
-        List<Orders> orders = this.database.getOrders();
+        List<Orders> orders = this.database.getOrders(InstanceManager.get_instance().get_logged_user());
         if (!orders.isEmpty()) {
-            int id = Integer.parseInt(orders.getLast().getId().replace("CMD", ""));
-            return new String[]{"CMD"+id+1, "TRK"+id+1};
+            return new String[]{
+                    getNewID("CMD", orders.getLast().getId()),
+                    getNewID("TKR", orders.getLast().getTrackingNumber())
+            };
         }
         throw new SQLDataException("Aucune données dans la table 'Orders'");
+    }
+
+    public String getNewID(String label, String id) {
+        int _id = Integer.parseInt(id.replace(label, ""));
+        String cmdId;
+        if (_id+1 < 10) {
+            cmdId = label+"0"+_id+1;
+        } else {
+            cmdId = label+_id+1;
+        }
+        return cmdId;
     }
 
     public void writeFile(String filename) throws SQLException, IOException {
