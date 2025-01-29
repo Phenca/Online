@@ -20,9 +20,7 @@ import javafx.stage.Stage;
 import online.mvc.models.*;
 import online.mvc.utils.InstanceManager;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -139,28 +137,8 @@ public class Controller {
     @FXML
     protected void export_orders(ActionEvent evt) {
         try {
-            List<Orders> orders = this.model.getDatabase().getOrdersToExport();
-            List<Orders_Options> ordersOptions;
-            File exportOrders = new File(this.model.resourcesPath +"/orders.txt");
-            FileWriter writer = new FileWriter(exportOrders, false);
-            for (Orders order : orders) {
-                ordersOptions = (this.model.getDatabase().getOrdersOptions(order.getId()));
-                StringBuilder line = new StringBuilder();
-                for (Orders_Options orderOption : ordersOptions) {
-                    if (Objects.equals(orderOption, ordersOptions.getFirst())) {
-                        line.append(orderOption.getOrder_id());
-                    }
-                    line.append(orderOption.getOption_id());
-                }
-                if (exportOrders.exists()) {
-                    writer.write(line+"\n");
-                    this.model.getDatabase().updateOrder(order.getId(), 2);
-                }
-            }
-            writer.close();
-        } catch (SQLException err) {
-            error_label.setText(err.getMessage());
-        } catch (IOException err) {
+            this.model.writeFile("orders.txt");
+        } catch (SQLException | IOException err) {
             error_label.setText(err.getMessage());
         }
     }
@@ -168,18 +146,11 @@ public class Controller {
     @FXML
     protected void import_orders_advancement() {
         try {
-            File importOrders = new File(this.model.resourcesPath +"/advancement.txt");
-            Scanner scanner = new Scanner(importOrders);
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().split(";");
-                try {
-                    this.model.getDatabase().updateOrder(line[0], Integer.parseInt(line[1]));
-                } catch (SQLException err) {
-                    error_label.setText(err.getMessage());
-                }
-            }
-        } catch (FileNotFoundException err) {
+            this.model.readFile("advancement.txt");
+        } catch (FileNotFoundException | SQLException err) {
             error_label.setText(err.getMessage());
+        } catch (NumberFormatException err) {
+            error_label.setText("Les données du fichier d'import sont incorrecte !");
         }
     }
 
