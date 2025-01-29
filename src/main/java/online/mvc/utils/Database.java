@@ -71,19 +71,6 @@ public class Database {
         throw new SQLDataException("Aucune données dans la table 'Customers'");
     }
 
-    public OrderStates getStateForId(int state_id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM ordersstates WHERE id="+state_id
-        );
-        ResultSet queryset = preparedStatement.executeQuery();
-        if (queryset.next()) {
-            int id = queryset.getInt("id");
-            String name = queryset.getString("name");
-            return new OrderStates(id, name);
-        }
-        throw new SQLDataException("Aucune données dans la table 'OrdersStates'");
-    }
-
     public void addCustomer(Customers data) throws SQLException {
         String sql = "INSERT INTO customers (id, firstname, lastname, email, delivery_address) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -134,7 +121,7 @@ public class Database {
             orders.add(new Orders(id, client_ref, emot_ref, total_price, state, tracking_number));
         }
         if (orders.isEmpty()) {
-            throw new SQLDataException("Aucune commande à exporter");
+            throw new SQLDataException("Aucune nouvelle commande à exporter");
         }
         return orders;
     }
@@ -184,20 +171,6 @@ public class Database {
         }
     }
 
-    public void addOrdersOptions(String order_id, HashMap<String, Options> options) throws SQLException {
-        for (Options option : options.values()) {
-            String sql = "INSERT INTO orders_options (order_id, option_id) VALUES (?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            try {
-                preparedStatement.setString(1, order_id);
-                preparedStatement.setInt(2, option.getId());
-                preparedStatement.executeUpdate();
-            } catch (Exception err) {
-                System.err.println(err.getMessage());
-            }
-        }
-    }
-
     public List<Orders_Options> getOrdersOptions(String _order_id) throws SQLException {
         List<Orders_Options> orders_options = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(
@@ -213,6 +186,20 @@ public class Database {
             throw new SQLDataException("Aucune données dans la table 'Orders_Options'");
         }
         return orders_options;
+    }
+
+    public void addOrdersOptions(String order_id, HashMap<String, Options> options) throws SQLException {
+        for (Options option : options.values()) {
+            String sql = "INSERT INTO orders_options (order_id, option_id) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            try {
+                preparedStatement.setString(1, order_id);
+                preparedStatement.setInt(2, option.getId());
+                preparedStatement.executeUpdate();
+            } catch (Exception err) {
+                System.err.println(err.getMessage());
+            }
+        }
     }
 
     public EMOT getEmotForId(int _id) throws SQLException {
@@ -268,5 +255,18 @@ public class Database {
             return new Options(id, name, type, price, emot_ref);
         }
         throw new SQLDataException("Aucune données dans la table 'Options'");
+    }
+
+    public OrderStates getStateForId(int state_id) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM ordersstates WHERE id="+state_id
+        );
+        ResultSet queryset = preparedStatement.executeQuery();
+        if (queryset.next()) {
+            int id = queryset.getInt("id");
+            String name = queryset.getString("name");
+            return new OrderStates(id, name);
+        }
+        throw new SQLDataException("Aucune données dans la table 'OrdersStates'");
     }
 }

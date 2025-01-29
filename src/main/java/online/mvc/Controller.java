@@ -44,143 +44,6 @@ public class Controller {
     @FXML
     private Label error_label;
 
-    // main.fxml fields.
-    @FXML
-    private GridPane grid_option_1;
-    @FXML
-    private GridPane grid_option_2;
-    @FXML
-    private GridPane grid_option_3;
-    @FXML
-    private Text emot_price;
-    @FXML
-    private Text options_price;
-    @FXML
-    private Text total_price;
-    @FXML
-    private Button emot_car;
-    @FXML
-    private Button emot_bike;
-    @FXML
-    private Button emot_scooter;
-    @FXML
-    private ImageView main_frame;
-
-    // main.fxml methods.
-    @FXML
-    protected void set_emot(ActionEvent evt) throws SQLException {
-        if (evt.getSource().equals(emot_car)) {
-            this.model.emotId = 1;
-            this.populateMainInterface(this.model.emotId, grid_option_2, "rim");
-        } else if (evt.getSource().equals(emot_bike)) {
-            this.model.emotId = 2;
-            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
-        } else if (evt.getSource().equals(emot_scooter)) {
-            this.model.emotId = 3;
-            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
-        }
-        this.populateMainInterface(this.model.emotId, grid_option_1, "color");
-        this.populateMainInterface(this.model.emotId, grid_option_3, "battery");
-        this.setDefaultImage();
-    }
-
-    protected void setDefaultImage() {
-        this.main_frame.setImage(new Image(this.model.resourcesPath +"img/"+this.model.emotId +"-color-white.jpg"));
-    }
-
-    protected void populateMainInterface(int emot_id, GridPane grid, String option_type) throws SQLException {
-        this.resetMainInterface(grid);
-        List<Options> options = this.model.getDatabase().getEmotOptionsForType(emot_id, option_type);
-        this.emot_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
-        this.total_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
-        int i=0;
-        String imageName;
-        for (Options option : options) {
-            if (option.getPrice() == 0) {
-                this.model.optionsMap.put(option_type, option);
-            }
-            if (grid.getChildren().get(i) instanceof ImageView image) {
-                if (option_type.equals("color")){
-                    imageName = option.getType()+"-"+option.getName()+".jpg";
-                } else {
-                    imageName = option.getEmot_ref().getId()+"-"+option.getType()+"-"+option.getName()+".jpg";
-                }
-                image.setImage(new Image(this.model.resourcesPath +option.getType()+"/"+imageName));
-                i++;
-            }
-        }
-    }
-    protected void calculatePrice() {
-        double price = 0;
-        for (Options option : this.model.optionsMap.values()) {
-            price += option.getPrice();
-        }
-        this.options_price.setText(String.valueOf(price));
-        this.calculateTotal();
-    }
-
-    protected void calculateTotal() {
-        double emotPrice = Double.parseDouble(this.emot_price.getText());
-        double optionsPrice = Double.parseDouble(this.options_price.getText());
-        this.total_price.setText(String.valueOf(emotPrice+optionsPrice));
-    }
-
-    @FXML
-    protected void update_main_interface(MouseEvent event) throws SQLException {
-        if (event.getSource() instanceof ImageView image) {
-            if (!Objects.isNull(image.getImage())) {
-                String fileName = Paths.get(image.getImage().getUrl()).getFileName().toString();
-                List<String> options = new ArrayList<>(List.of(fileName.replace(".jpg", "").split("-")));
-                if (fileName.startsWith("color")) {
-                    this.main_frame.setImage(new Image(this.model.resourcesPath + "img/" + this.model.emotId + "-" + fileName));
-                } else {options.removeFirst();}
-                options.addFirst(String.valueOf(this.model.emotId));
-                Options option = this.model.getDatabase().getOptionForParameters(null, Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
-                this.model.optionsMap.replace(option.getType(), option);
-                this.calculatePrice();
-            }
-        }
-    }
-
-    protected void resetMainInterface(GridPane grid) {
-        for (Node cell : grid.getChildren()) {
-            if (cell instanceof ImageView image) {
-                image.setImage(null);
-            }
-        }
-        this.main_frame.setImage(null);
-        this.emot_price.setText("0");
-        this.options_price.setText("0");
-        this.total_price.setText("0");
-    }
-
-    @FXML
-    protected void validate_order() throws SQLException {
-        error_label.setText("");
-        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
-        disconnectPopup.setTitle("Confirmation de commande");
-        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
-        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
-        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
-        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
-            String[] orderIds = this.model.getOrderIds();
-            try {
-                Orders order = new Orders(
-                        orderIds[0],
-                        InstanceManager.get_instance().get_logged_user(),
-                        this.model.getDatabase().getEmotForId(this.model.emotId),
-                        Double.parseDouble(this.total_price.getText()),
-                        this.model.getDatabase().getStateForId(1),
-                        orderIds[1]
-                );
-                this.model.getDatabase().addOrder(order);
-                this.model.getDatabase().addOrdersOptions(order.getId(), this.model.optionsMap);
-            } catch (SQLException err) {
-                error_label.setText(err.getMessage());
-            }
-        }
-    }
-
     // login.fxml fields.
     @FXML
     private TextField login_email_field;
@@ -200,17 +63,17 @@ public class Controller {
         fields.add(login_password_field);
         try {
             if (checkFieldsNotEmpty(fields)) {
-            checkEmailField(login_email_field);
-            for (Customers customer : this.model.getDatabase().getCustomers()) {
-                if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
-                    if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
-                        System.out.println("Authentication successful !");
-                        InstanceManager.get_instance().set_logged_user(customer);
-                        loadScreen(evt, "user-choice.fxml");
-                        return true;
+                checkEmailField(login_email_field);
+                for (Customers customer : this.model.getDatabase().getCustomers()) {
+                    if (Objects.equals(customer.getEmail(), login_email_field.getText())) {
+                        if (Objects.equals(customer.getPassword(), login_password_field.getText())) {
+                            System.out.println("Authentication successful !");
+                            InstanceManager.get_instance().set_logged_user(customer);
+                            loadScreen(evt, "user-choice.fxml");
+                            return true;
+                        }
                     }
                 }
-            }
             }
         } catch (IllegalArgumentException err) {
             error_label.setText(err.getMessage());
@@ -249,29 +112,17 @@ public class Controller {
             if (checkFieldsNotEmpty(fields)) {
                 if (Objects.equals(signin_1st_password_field.getText(), signin_2nd_password_field.getText())) {
                     Customers customer = new Customers(
-                        this.model.getCustomerId(signin_email_field.getText()),
-                        signin_firstname_field.getText(),
-                        signin_lastname_field.getText(),
-                        signin_email_field.getText(),
-                        signin_1st_password_field.getText(),
-                        signin_delivery_address_field.getText()
+                            this.model.getCustomerId(signin_email_field.getText()),
+                            signin_firstname_field.getText(),
+                            signin_lastname_field.getText(),
+                            signin_email_field.getText(),
+                            signin_1st_password_field.getText(),
+                            signin_delivery_address_field.getText()
                     );
                     this.model.getDatabase().addCustomer(customer);
                 }
             }
         } catch (IllegalArgumentException err) {error_label.setText(err.getMessage());}
-    }
-
-    @FXML
-    protected void disconnect(ActionEvent evt) {
-        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
-        disconnectPopup.setTitle("Confirmation de Déconnexion");
-        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir vous déconnecter ?");
-        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
-        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
-        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
-            loadScreen(evt, "login.fxml");
-        }
     }
 
     // user-choice methods.
@@ -348,7 +199,6 @@ public class Controller {
     @FXML
     private TableColumn<Orders, String> tracking_number_column;
 
-
     // orders-tracking methods.
     @FXML
     protected void back_to_menu(ActionEvent evt) {
@@ -366,6 +216,156 @@ public class Controller {
         ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders());
         System.out.println(ordersList);
         if (!ordersList.isEmpty()) {this.orders_table.setItems(ordersList);}
+    }
+
+    // main.fxml fields.
+    @FXML
+    private GridPane grid_option_1;
+    @FXML
+    private GridPane grid_option_2;
+    @FXML
+    private GridPane grid_option_3;
+    @FXML
+    private Text emot_price;
+    @FXML
+    private Text options_price;
+    @FXML
+    private Text total_price;
+    @FXML
+    private Button emot_car;
+    @FXML
+    private Button emot_bike;
+    @FXML
+    private Button emot_scooter;
+    @FXML
+    private ImageView main_frame;
+
+    // main.fxml methods.
+    @FXML
+    protected void set_emot(ActionEvent evt) throws SQLException {
+        if (evt.getSource().equals(emot_car)) {
+            this.model.emotId = 1;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "rim");
+        } else if (evt.getSource().equals(emot_bike)) {
+            this.model.emotId = 2;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
+        } else if (evt.getSource().equals(emot_scooter)) {
+            this.model.emotId = 3;
+            this.populateMainInterface(this.model.emotId, grid_option_2, "frame");
+        }
+        this.populateMainInterface(this.model.emotId, grid_option_1, "color");
+        this.populateMainInterface(this.model.emotId, grid_option_3, "battery");
+        this.setDefaultImage();
+    }
+
+    protected void setDefaultImage() {
+        this.main_frame.setImage(new Image(this.model.resourcesPath +"img/"+this.model.emotId +"-color-white.jpg"));
+    }
+
+    protected void populateMainInterface(int emot_id, GridPane grid, String option_type) throws SQLException {
+        this.resetMainInterface(grid);
+        List<Options> options = this.model.getDatabase().getEmotOptionsForType(emot_id, option_type);
+        this.emot_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
+        this.total_price.setText(String.valueOf(options.getFirst().getEmot_ref().getPrice()));
+        int i=0;
+        String imageName;
+        for (Options option : options) {
+            if (option.getPrice() == 0) {
+                this.model.optionsMap.put(option_type, option);
+            }
+            if (grid.getChildren().get(i) instanceof ImageView image) {
+                if (option_type.equals("color")){
+                    imageName = option.getType()+"-"+option.getName()+".jpg";
+                } else {
+                    imageName = option.getEmot_ref().getId()+"-"+option.getType()+"-"+option.getName()+".jpg";
+                }
+                image.setImage(new Image(this.model.resourcesPath +option.getType()+"/"+imageName));
+                i++;
+            }
+        }
+    }
+
+    protected void calculatePrice() {
+        double price = 0;
+        for (Options option : this.model.optionsMap.values()) {
+            price += option.getPrice();
+        }
+        this.options_price.setText(String.valueOf(price));
+        this.calculateTotal();
+    }
+
+    protected void calculateTotal() {
+        double emotPrice = Double.parseDouble(this.emot_price.getText());
+        double optionsPrice = Double.parseDouble(this.options_price.getText());
+        this.total_price.setText(String.valueOf(emotPrice+optionsPrice));
+    }
+
+    @FXML
+    protected void update_main_interface(MouseEvent event) throws SQLException {
+        if (event.getSource() instanceof ImageView image) {
+            if (!Objects.isNull(image.getImage())) {
+                String fileName = Paths.get(image.getImage().getUrl()).getFileName().toString();
+                List<String> options = new ArrayList<>(List.of(fileName.replace(".jpg", "").split("-")));
+                if (fileName.startsWith("color")) {
+                    this.main_frame.setImage(new Image(this.model.resourcesPath + "img/" + this.model.emotId + "-" + fileName));
+                } else {options.removeFirst();}
+                options.addFirst(String.valueOf(this.model.emotId));
+                Options option = this.model.getDatabase().getOptionForParameters(null, Integer.parseInt(options.getFirst()), options.get(1), options.getLast());
+                this.model.optionsMap.replace(option.getType(), option);
+                this.calculatePrice();
+            }
+        }
+    }
+
+    @FXML
+    protected void validate_order() throws SQLException {
+        error_label.setText("");
+        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnectPopup.setTitle("Confirmation de commande");
+        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir valider votre commande ?");
+        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
+        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
+            String[] orderIds = this.model.getOrderIds();
+            try {
+                Orders order = new Orders(
+                        orderIds[0],
+                        InstanceManager.get_instance().get_logged_user(),
+                        this.model.getDatabase().getEmotForId(this.model.emotId),
+                        Double.parseDouble(this.total_price.getText()),
+                        this.model.getDatabase().getStateForId(1),
+                        orderIds[1]
+                );
+                this.model.getDatabase().addOrder(order);
+                this.model.getDatabase().addOrdersOptions(order.getId(), this.model.optionsMap);
+            } catch (SQLException err) {
+                error_label.setText(err.getMessage());
+            }
+        }
+    }
+
+    protected void resetMainInterface(GridPane grid) {
+        for (Node cell : grid.getChildren()) {
+            if (cell instanceof ImageView image) {
+                image.setImage(null);
+            }
+        }
+        this.main_frame.setImage(null);
+        this.emot_price.setText("0");
+        this.options_price.setText("0");
+        this.total_price.setText("0");
+    }
+
+    @FXML
+    protected void disconnect(ActionEvent evt) {
+        Alert disconnectPopup = new Alert(Alert.AlertType.CONFIRMATION);
+        disconnectPopup.setTitle("Confirmation de Déconnexion");
+        disconnectPopup.setHeaderText("Êtes-vous sûr de vouloir vous déconnecter ?");
+        disconnectPopup.setContentText("Cliquez sur 'OK' pour confirmer ou 'Annuler' pour annuler l'action.");
+        Optional<ButtonType> userAction = disconnectPopup.showAndWait();
+        if (userAction.isPresent() && userAction.get() == ButtonType.OK) {
+            loadScreen(evt, "login.fxml");
+        }
     }
 
     // load new screen method.

@@ -14,7 +14,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="Bienvenu mon gaté">
+            <Label text="Bienvenue sur votre application de commande MDTE">
                <font>
                   <Font name="Impact" size="25.0" />
                </font>
