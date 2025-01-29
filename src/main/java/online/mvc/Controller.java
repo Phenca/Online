@@ -23,6 +23,7 @@ import online.mvc.utils.InstanceManager;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -136,7 +137,9 @@ public class Controller {
 
     @FXML
     protected void display_orders(ActionEvent evt) {
+        System.out.println("DIsplay orders");
         loadScreen(evt, "orders-tracking.fxml");
+        System.out.println("orders displayed");
     }
 
     @FXML
@@ -188,10 +191,14 @@ public class Controller {
         emot_ref_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmotName()));
         price_column.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         state_column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getOrderState()));
-        tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("trackingNumber"));;
-        ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders(InstanceManager.get_instance().get_logged_user()));
-        if (!ordersList.isEmpty()) {
-            this.orders_table.setItems(ordersList);
+        tracking_number_column.setCellValueFactory(new PropertyValueFactory<>("trackingNumber"));
+        try {
+            ObservableList<Orders> ordersList = FXCollections.observableArrayList(this.model.getDatabase().getOrders(InstanceManager.get_instance().get_logged_user()));
+            if (!ordersList.isEmpty()) {
+                this.orders_table.setItems(ordersList);
+            }
+        } catch (SQLDataException err) {
+            System.err.println("No orders for user " + InstanceManager.get_instance().get_logged_user() + ", Message : " + err.getMessage());
         }
     }
 
@@ -349,6 +356,7 @@ public class Controller {
     private void loadScreen(ActionEvent evt, String name) {
         try {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(name));
+            System.out.println(getClass().getResource(name));
             InstanceManager.get_instance().set_current_view_name(fxmlloader.getLocation().getPath());
             AnchorPane view = fxmlloader.load();
             Stage new_stage = InstanceManager.get_instance().get_primary_stage();
@@ -363,7 +371,7 @@ public class Controller {
                 controller.emot_car.fire();
             }
         } catch (Exception err) {
-            System.err.println(err.getMessage());
+            err.printStackTrace();
         }
     }
 
